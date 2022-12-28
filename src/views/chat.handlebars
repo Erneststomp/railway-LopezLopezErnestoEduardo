@@ -1,0 +1,89 @@
+<div style="width: 100%;">
+
+    <div >
+        <form action="/logout" method="post" >
+            <label>Bienvenido: {{userData.names}}</label>
+            <br>
+            <label>correo:{{userData.id}}</label>
+            <span id="log_user"></span>
+            <button id="logout">Log Out</button>
+        </form>
+    </div>
+    <br>
+
+
+    <div >
+        <label>Name</label>
+        <input type='text' name='title' id='title' required/><br>
+        <label>Reward</label>
+        <input type='number' name='price'id='price' required/><br>
+        <label>Image URL</label>
+        <input type='url' name='thumbnail' id='thumbnail' required/><br>
+        <button id="sendNewChar">Add Character</button>
+    </div>
+
+
+    <div style="display: inline-flex; width: 95%;">
+        <div style="width: 90%;">
+        <h1> Characters:</h1>
+            <div style="display: block;  border: 1px solid red;  padding: 5px;  margin-top: 5px; width: 100%; height: 550px;overflow-y: scroll; border-style:double;">
+                 <span id="log_character"></span>
+                {{#each characters}}
+                    <div>
+                        <img src="{{this.thumbnail}}" style="height: 100px;"></img>
+                        <h2>Name: {{this.title}}/ Reward: {{this.price}}0 Schmeckles</h2>
+                    </div>
+                {{/each}}
+            </div>
+        </div>
+        <div style="width: 90%; margin">
+            <h1>Forum Chat</h1><input id="mymessage"><br>
+            <div style="display: block;  border: 1px solid red;  padding: 5px;  margin-top: 5px; width: 100%; height: 550px;overflow-y: scroll; border-style:double; margin: 30px;">
+                <div style="marginRight:'auto',marginLeft:'auto' ">
+                    
+                    
+                      <span id="log_chat"></span>
+                     {{#each messages}}
+                    <div>
+                        <p>{{this.date}} {{this.user}} {{this.message}}</p>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+</div>
+ 
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/socket.io/socket.io.js"></script>    
+    <script  src="../../chat.js" async 
+  data-id="p3PkBtuA" 
+  data-name="MyUniqueName" 
+    name='{{userData.names}}'
+    alias='{{userData.alias}}'
+    lastname='{{userData.lastname}}'
+    id='{{userData.id}}'
+    avatar='{{userData.avatar}}'
+    '{{userData.avatar}}'=''
+    
+    > 
+  
+  </script>
+
+  <script type="text/javascript">
+      window.addEventListener( "pageshow", function ( event ) {
+  var historyTraversal = event.persisted || 
+                         ( typeof window.performance != "undefined" && 
+                              window.performance.navigation.type === 2 );
+  if ( historyTraversal ) {
+    window.location.reload();
+    }
+    });
+     </script>
+    <script src="https://cdn.jsdelivr.net/npm/normalizr@3.6.1/dist/normalizr.browser.min.js"></script>
+    <script type="text/javascript">
+    function actualizar(){location.reload(true);}
+            setInterval("actualizar()",600000);
+    </script>

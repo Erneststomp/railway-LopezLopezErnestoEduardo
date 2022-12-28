@@ -1,0 +1,29 @@
+<div style="width: 100%;">
+    <form action="/register" method="post" id="register">
+        <label>Fisrts Name</label>
+        <input type='text' name='names' id='names' required/><br>
+        <label>Last Name</label>
+        <input type='text' name='lastname' id='lastname' required/><br>
+        <label>Email</label>
+        <input type='email' name='id' id='id' required/><br>
+        <label>Age</label>
+        <input type='number' name='age'id='age' required/><br>
+        <label>Avatar URL</label>
+        <input type='text' name='avatar' id='avatar' required/><br>
+        <label>Alias</label>
+        <input type='text' name='alias' id='alias' required/><br>
+        <label>Password</label>
+        <input type='password' name='password'id='password' required/><br>
+        <br>
+        <button id="send">Register</button>
+    </form>
+    <br>
+     
+    <button id="login">Log In</button>
+    
+     
+</div>
+ 
+    <script src="/socket.io/socket.io.js"></script>    
+    <script  src="../../register.js"> </script>
+ 
