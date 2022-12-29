@@ -5,8 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon src/app.js PROD",
-    "dev":"nodemon src/app.js DEV",
+    "start": "node src/app.js PROD",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
