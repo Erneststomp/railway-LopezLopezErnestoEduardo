@@ -23,7 +23,6 @@ const initializePassport=()=>{
         }
         catch(error){
             done(error)
-            console.log(error)
         }
     }))
 
@@ -47,7 +46,7 @@ const initializePassport=()=>{
     passport.use('github',new GithubStrategy({
         clientID:'Iv1.9817d55c20e6d34d',
         clientSecret:'1bd432c5feff843d2085ff23660563ff5dc3bb05',
-        callbackURL:'/githubcallback',
+        callbackURL:'https://railway-lopezlopezernestoeduardo-production.up.railway.app/githubcallback',
     }, async (accessToken,refreshToken,profile,done)=>{
         const{name, avatar_url, email, login}=profile._json
         if(!email)return done(null,false,{message:'Your Github Account has a private email'})
