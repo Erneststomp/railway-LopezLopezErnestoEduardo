@@ -38,7 +38,7 @@ app.use(express.json());
 app.use(session({
     store: MongoStore.create({
         mongoUrl:config.mongo.urlmongo,
-        ttl:600
+        ttl:60
     }),
     secret: "nosequeponer000",
     resave:true,
