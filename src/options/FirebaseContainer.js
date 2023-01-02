@@ -8,7 +8,6 @@ admin.initializeApp({
     databaseURL: 'https://backend-mocks.firebaseio.com'
 })
 const db = admin.firestore()
-console.log('Firestore is connected!')
 let query = db.collection('chatinfo')
 let query2 = db.collection('characterinfo')
 let messagebase

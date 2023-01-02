@@ -24,14 +24,11 @@ const socket=io(
     userAlias=me.getAttribute('alias');
     userAvatar=me.getAttribute('avatar')
     userEmail=me.getAttribute('id')
-    console.log(userEmail)
 })();
    if(userEmail!=''){
     socket.connect();
     socket.emit('messagereq')
     socket.emit('Charreq')}
-
-
 
 const ChatBox = document.getElementById('mymessage')
 ChatBox.addEventListener('keyup',evt=>{ 

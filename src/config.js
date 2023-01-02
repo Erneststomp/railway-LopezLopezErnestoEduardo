@@ -5,7 +5,6 @@ dotenv.config({
     path:mode==="DEV"? './.env.development':'./.env.production'
 }
 );
-console.log(process.env.PORT)
 export default   {
     app:{
         MODE: process.env.MODE || 'DEFAULT',
@@ -15,4 +14,4 @@ export default   {
     mongo:{
         urlmongo:"mongodb+srv://ernest:1234567890@cluster0.4pjly21.mongodb.net/Users?retryWrites=true&w=majority"
     }
-}
+}  

@@ -4,16 +4,14 @@ let database=new KnexContainer(config,'messages')
 
 const Messages ={
 
-    createMessagesTable: async () => {
-        try {
-          database = new KnexContainer(config, 'messages') 
-          await database.createTable()
-        } catch (error) {
-          console.log({Server: error})
-        }
+  createMessagesTable: async () => {
+      try {
+        database = new KnexContainer(config, 'messages') 
+        await database.createTable()
+      } catch (error) {
+        console.log({Server: error})
       }
-
-      ,  
+  },  
   getAllMessages: async () => {
     try {
       database = new KnexContainer(config, 'messages') 

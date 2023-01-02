@@ -11,16 +11,18 @@ router.get('/', async(req,res)=>{
     }
 })
 router.post('/', async(req,res)=>{
+    console.log(req.session.user)
     res.redirect('/logout');
 })
 router.post('/logout', async(req,res)=>{
+    console.log(req.session.user)
     if(req.session.user){
         let sesionUser=req.session.user
         req.session.destroy()
         res.render('logout.handlebars',{userData:sesionUser})
         
     }else{
-        res.redirect('/login');
+        res.redirect('/login'); 
     }    
 })
 router.get('/api/productos-test', async(req,res)=>{

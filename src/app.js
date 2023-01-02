@@ -18,7 +18,6 @@ const app =express();
 
 const connection =mongoose.connect(config.mongo.urlmongo)
 const PORT =   config.app.PORT || 3000;
-console.log(config.app)
 const server = app.listen(PORT,async()=>{
     let existen=await Messages1.getMessage()
     if (existen==0){
@@ -31,7 +30,6 @@ const server = app.listen(PORT,async()=>{
         Messages1.createCharacterTable()
         console.log('fue creada la tabla characters')
     }
-
     // 
     console.log('Its Working')
 });
@@ -44,7 +42,7 @@ app.use(session({
     }),
     secret: "nosequeponer000",
     resave:true,
-    saveUninitialized:false,
+    saveUninitialized:true,
 }));
 
 app.use(flash());
@@ -70,9 +68,6 @@ io.on('connection', socket=>{
     })
 
     socket.on('message',async(data)=>{
-        
-        console.log('data')
-        console.log(data)
         let log= await Messages1.getAllMessages();
         data.id=Object.keys(log.entities.messages).length+1
         await Messages1.addNewMessage(data);
