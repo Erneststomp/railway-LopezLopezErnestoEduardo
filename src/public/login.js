@@ -1,4 +1,4 @@
-const form = document.getElementById('login')
+const form = document.getElementById('loginForm')
 
 form.addEventListener('sumbit',evt=>{
     evt.preventDefault();
@@ -14,12 +14,8 @@ form.addEventListener('sumbit',evt=>{
     }).then(result=>result.json()).then(json=>console.log(json))
 })
 
-const changeregister= document.getElementById('singup')
-changeregister.addEventListener('click',evt=>{ 
-    window.location.href = "/register";
-}) 
+// const changeregister= document.getElementById('singup')
+// changeregister.addEventListener('click',evt=>{ 
+//     window.location.href = "/register";
+// }) 
 
-const logingithub= document.getElementById('github')
-logingithub.addEventListener('click',evt=>{ 
-    window.location.href = "/github";
-}) 

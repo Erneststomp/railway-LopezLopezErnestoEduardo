@@ -2,7 +2,7 @@ import { Router } from "express";
 import { fork } from 'child_process'
 import __dirname from "../utils.js";
 
-const scriptPath = __dirname +  '/operacion.js';
+const scriptPath = __dirname +  '/service/operacion.js';
 
 const router = Router();
 

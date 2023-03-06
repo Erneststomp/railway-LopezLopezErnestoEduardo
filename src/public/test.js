@@ -8,7 +8,7 @@ socket.emit('test')
 
 
 socket.on('logtest',logtest=>{
-    console.log(logtest)
+
     let char=document.getElementById('log_character')
     let Characterss=''
     for(let i=0;i<logtest.length;i++){

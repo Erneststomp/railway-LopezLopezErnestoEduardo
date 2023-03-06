@@ -1,0 +1,72 @@
+<div style="width: 100%;">
+
+    <div >
+        <form action="/logout" method="post" >
+            <label>Bienvenido: {{userData.names}}</label>
+            <br>
+            <label>correo:{{userData.id}}</label>
+            <span id="log_user"></span>
+            <button id="logout">Log Out</button>
+        </form>
+    </div>
+    <br><br>
+    <div >
+        <label>Go to Cart</label>
+        <button id="gotoCarts">go to cart</button>
+    </div>
+    <br>
+     <div >
+        <label>Go to Chat</label>
+        <button id="gotoChat">go to chat</button>
+    </div>
+    <br>
+
+
+
+    <div style="display: inline-flex; width: 95%;">
+        <div style="width: 90%;">
+        <h1> Available Pokemons:</h1>
+            <div style="display: block;  border: 1px solid red;  padding: 5px;  margin-top: 5px; width: 100%; height: 550px;overflow-y: scroll; border-style:double;">
+                
+                <ol>
+                    {{#each characters}}
+                    <li style="list-style: none;">
+                        <img src="{{this.thumbnail}}" style="height: 100px;"></img>
+                        <h2>  Name: {{this.name}} Price: ${{this.price}} pokedollars  Stock: {{this.stock}}</h2>
+                        <h3> Details: {{this.description}}</h3>
+                        <button class="add-pokemon-btn">Add to Cart</button> 
+                        <button class="view-pokemon-btn">View</button>
+                    </li>
+                    {{/each}}
+                </ol>
+                    <br>
+            </div>
+        </div>
+    </div>
+</div>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/socket.io/socket.io.js"></script>    
+    <script  src="../../home.js" async 
+        data-id="p3PkBtuA" 
+        data-name="MyUniqueName" 
+        name='{{userData.names}}'
+        alias='{{userData.alias}}'
+        lastname='{{userData.lastname}}'
+        id='{{userData.id}}'
+        avatar='{{userData.avatar}}'
+    > </script>
+
+  <script type="text/javascript">
+    window.addEventListener( "pageshow", function ( event ) {
+  var historyTraversal = event.persisted || 
+    ( typeof window.performance != "undefined" && window.performance.navigation.type === 2 );
+  if ( historyTraversal ) {
+    window.location.reload();
+    }
+    });
+     </script>
+    <script src="https://cdn.jsdelivr.net/npm/normalizr@3.6.1/dist/normalizr.browser.min.js"></script>
+    <script type="text/javascript">
+    function actualizar(){location.reload(true);}
+            setInterval("actualizar()",600000);
+    </script>

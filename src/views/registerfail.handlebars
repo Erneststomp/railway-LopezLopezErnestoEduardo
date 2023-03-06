@@ -1,6 +1,7 @@
 <div style="width: 100%;">
-        <label>The register process has failed. The user already exist</label>   
-        <input type="button" onclick="history.back()" name="volver atrás" value="volver atrás">
+        <label>The register process has failed.</label>   
+        <label>{{errorMessage}}</label>   
+        <input type="button" onclick="history.back()" name="volver atrás" value="go back">
 </div>
  
-    <script src="/socket.io/socket.io.js"></script>    
+<script src="/socket.io/socket.io.js"></script>
