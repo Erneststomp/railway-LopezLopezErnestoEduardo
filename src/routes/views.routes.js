@@ -5,7 +5,7 @@ import isAutenticated from '../middleware/isautenticated.js'
 
 const router= Router(); 
 
-router.get('/login', async(req,res)=>{
+router.get('/', async(req,res)=>{
   res.send({status:'sucess',message:"the API is working"})
 })
 
