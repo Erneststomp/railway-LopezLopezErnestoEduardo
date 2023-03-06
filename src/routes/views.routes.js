@@ -4,6 +4,11 @@ import {chatDAO} from '../dao/chat/index.js'
 import isAutenticated from '../middleware/isautenticated.js'
 
 const router= Router(); 
+
+router.get('/login', async(req,res)=>{
+  res.send({status:'sucess',message:"the API is working"})
+})
+
 //se deja una vista con handlebars al login, ya que para entrar al chat es necesario el inicio de sesion, ya que es necesario por la implementacion de socket.
 router.get('/login', async(req,res)=>{
     res.render('login.handlebars')
