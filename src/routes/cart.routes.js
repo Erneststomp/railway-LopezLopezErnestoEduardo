@@ -10,10 +10,10 @@ import path from 'path';
 // Get Cart List, muestra todos los carritos que hay, en este caso son carritos generados por ruta, no son los carritos personales, estos no estan protegidos pro inicio de sesion
 //todos los cId son numericos aqui, pues son generados con un iD numerico
 router.get('/', cartsController.getcartList)
-// Get Cart by ID
-router.get('/:cid', cartsController.getCartById)
 // Create New Cart
 router.post('/', cartsController.addNewCart)
+// Get Cart by ID
+router.get('/:cid', cartsController.getCartById)
 // Add Product to Cart
 router.put('/:cid/products', cartsController.addProductToCart)          
 // Delete Product from Cart
@@ -22,14 +22,29 @@ router.delete('/:cid/products/:pid', cartsController.deleteProductToCartById)
 router.delete('/:cid', cartsController.deleteCartById)
 // Get Cart Product List
 router.get('/:cid/products/', async(req,res)=>{
+  const cid = req.params.cid;
+  if (isNaN(cid)) {
+    return res.status(400).json({ status: 'error', message: 'The cid parameter must be a number' });
+  }
       const DetailedCart = await cartsController.getAllProductListByCartId(req,res)
-      return res.status(200).json({description:`Cart Founf`,DetailedCart})
+      if(DetailedCart.data='error'){
+        return res.status(422).json({description:`error`,DetailedCart})
+      }else{
+        return res.status(200).json({description:`Cart Found`,DetailedCart})
+      }
   })
 //Buy the content of the cart, al igual que el carrito personal, enviara un correo con la lista de lso productos comprados, inluyendo la cantidad total de articulos y el precio total, en este caso ya que no es a traves de un id, se envian al email del adminsitrados
 //que se encuentra en las variables de enotrno
 router.post('/:cid/products/', async(req,res)=>{
     try {
+        const cid = req.params.cid;
+        if (isNaN(cid)) {
+          return res.status(400).json({ status: 'error', message: 'The cid parameter must be a number' });
+        }
         const DetailedCart = await cartsController.getAllProductListByCartId(req,res)
+        if(DetailedCart.data='error'){
+          return res.status(422).json({description:`error`,DetailedCart})
+        }
         const id=process.env.EMAIL_ADDRESS;
         const mailer = new MailingService();
         const cartTemplate = Handlebars.compile(fs.readFileSync(path.resolve(__dirname, 'views', 'cart-template.handlebars'), 'utf8'));

@@ -71,8 +71,6 @@ const initializePassport=()=>{
     passport.use('login',new localStrategy({usernameField:'id'},
     async(id,password,done)=>{
         try{
-            //verifica que los dos datos sean enviados
-            if(!id||!password)return done(null, false, {message:"All fields are needed"})
             const user =await userService.findOne({id:id})
             //verifica que exista el email
             if(!user) return done(null, false,{message:"There is no user with this email, please verify or register"})
@@ -90,8 +88,6 @@ const initializePassport=()=>{
     passport.use('deleteaccount',new localStrategy({usernameField:'id'},
     async(id,password,done)=>{
         try{
-            //verifica que los dos datos sean enviados
-            if(!id||!password)return done(null, false, {message:"All fields are needed"})
             const user =await userService.findOne({id:id})
             //verifica que exista el usuario para pdoer eliminarlo
             if(!user) return done(null, false,{message:"There is no user with this email"})

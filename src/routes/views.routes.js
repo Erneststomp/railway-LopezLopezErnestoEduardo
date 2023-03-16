@@ -1,12 +1,13 @@
 import { Router } from "express";
-import {productDAO} from '../dao/product/index.js'
 import {chatDAO} from '../dao/chat/index.js'
 import isAutenticated from '../middleware/isautenticated.js'
+import validator from "validator";
+import userService from "../public/users.js";
 
 const router= Router(); 
 
 router.get('/', async(req,res)=>{
-  res.send({status:'sucess',message:"the API is working, to see the detailed routes, please go to https://github.com/Erneststomp/railway-LopezLopezErnestoEduardo and verify with the readme.md"})
+  res.send({status:'sucess',message:"the API is working, to see the detailed routes, please go to https://github.com/Erneststomp/railway-LopezLopezErnestoEduardo and verify with the readme.md , for login go to the route /login and for chat go to route /chat all other routes have no templates"})
 })
 
 //se deja una vista con handlebars al login, ya que para entrar al chat es necesario el inicio de sesion, ya que es necesario por la implementacion de socket.
@@ -47,6 +48,11 @@ router.get('/chat',isAutenticated, async(req,res)=>{
 router.get('/chat/:id', isAutenticated, async (req, res) => {
   const sessionId = req.params.id;
   const allChats = await chatDAO.getAll();
+  if (!validator.isEmail(sessionId )) {
+    return res.status(400).json({ status: 'error', message: 'Invalid email' });
+  }
+  let user=await userService.findOne({id:sessionId})
+  if(!user) return res.send({status:"error",error:"There is no user with this email, please verify or register"})
   const chat = allChats.filter(chat => chat.user === sessionId)
     .map(chat => ({
       user: chat.user,

@@ -1,3 +1,5 @@
+link al proyecto desplegado en railway (solo /login y /chat (tambien incluye la ruta /chat/:id) muestran plantillas siendo id el email a visualizar en el chat): https://railway-lopezlopezernestoeduardo-production.up.railway.app/
+
 Diagrama base Body JSON Postman, para la ruta: /login con el metodo post para iniciar sesion
 {
     	"id":"ernesto.lopez.lbm@outlook.com",
@@ -6,13 +8,13 @@ Diagrama base Body JSON Postman, para la ruta: /login con el metodo post para in
 
 Diagrama base Body JSON Postman, para la ruta: /register con el metodo post para registrar un nuevo usuario
 {
-	"names":"Ernesto",
+		"names":"Ernesto",
     	"lastname":"Lopez",
     	"id":"ernesto.lopez.lbm@outlook.com",
     	"password":"1234Ab",
     	"age":21,
     	"avatar":"asd",
-	"CountryCode":"+32",
+		"CountryCode":"+32",
     	"phone":"234234234",
     	"adress":"asd asdasd asd ",
     	"alias":"ErnestStomp"
@@ -58,7 +60,7 @@ la ruta /api/carts/:cid/products con el metodo GET nos mostrara todos los elemen
 Para la ruta /api/carts/:cid/products  con el metodo PUT para agregar un producto con su respectiva cantidad, al carrito seleccionado si no se especifica se agrega 1 por defecto
 {
 	"pid": 1,
-    	"quantity":3 (opcional)
+    "quantity":3 (opcional)
 }
 
 Para la ruta /:cid/products/:pid con el metodo DELETE nos elimina el producto correspondiente al id del carrito (elimina todos los productos)

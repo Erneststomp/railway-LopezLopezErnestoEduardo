@@ -34,16 +34,12 @@ export const cartsController = {
   getAllProductListByCartId: async (req, res) => {
     try {
       const cartId = parseInt(req.params.cid)
-      if(isNaN(cartId)){
-        return res.send({description:'Invalid Cart ID, it must be numerical'})
-      }
-      
       let cartFound = await cartDAO.getById(cartId)
       const productFound  = await productDAO.getAll()
       if (!cartFound) {
-        return res.status(422).json({ description: 'Cart not found.' })
+        return { data: 'error', message:'Cart not found'};
       } else if (!cartFound.products ) {
-        return res.status(200).json({description:`Cart found, content 0 products.`,data:[]})
+        return { data: 'error',description:`Cart found, content 0 products.`,data:[]}
       }
       else {
         let productTotalPayment = 0;
@@ -106,10 +102,14 @@ export const cartsController = {
 
       const pId = parseInt(req.body.pid)
 
+      if(!req.body.pid){
+        return res.send({description:'You must send a product id (numerical)'})
+      }
+
       const pquantity =  req.body.quantity ? parseInt(req.body.quantity) : 1
 
       if(isNaN(pId) || isNaN(pquantity)||isNaN(cId)){
-        return res.send({description:'Invalid parameters, they all must be numerical'})
+        return res.send({description:'Invalid parameters, pid, cid and quantity must be numerical (if quantity is not send, or invalid, 1 will be set by default)'})
       }
 
       const cartFound = await cartDAO.getById(cId)
@@ -260,9 +260,11 @@ export const cartsController = {
       const cId = req.params.cid
       const pId = parseInt(req.body.pid)
       const pquantity =  req.body.quantity ? parseInt(req.body.quantity) : 1
-
+      if(!req.body.pid){
+        return res.send({description:'You must send a numerical product id (pid)'})
+      }
       if(isNaN(pId) || isNaN(pquantity)){
-        return res.send({description:'Invalid parameters, they must be numerical'})
+        return res.send({description:'Invalid parameters, pid and quantity must be numerical (if quantity is not send, it will be set 1 by default)'})
       }
       const cartFound = await personalCartDAO.getPersonalById(cId)
       if(!cartFound){
@@ -327,15 +329,16 @@ export const cartsController = {
     try {
       const cId = req.params.cid 
       const pId = parseInt( req.params.pid )
+      if(!req.body.pid){
+        return res.send({description:'You must send a product id (numerical)'})
+      }
       if(isNaN(pId)){
         return res.send({description:'Invalid Product ID, it must be numerical'})
       }
       const cartFound = await personalCartDAO.getPersonalById(cId)
-
       if(!cartFound){
         return res.status(422).json({ description: `Cart ${cId} not found.` })
       }
-
       const productFound = await productDAO.getById(pId)
       if(!productFound){
         return res.status(422).json({ description: `Product ${pId} not found.` })

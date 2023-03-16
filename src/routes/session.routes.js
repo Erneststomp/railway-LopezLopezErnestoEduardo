@@ -6,6 +6,8 @@ import MailingService from "../service/mailing.js";
 import userService from "../public/users.js";
 import { createHash } from "../utils.js";
 import isAutenticated from '../middleware/isautenticated.js'
+import validator from "validator";
+
 
 const router= Router();
 //mediante passport se realiza el registro de los datos del nuevo usuario, enc aso de que exista un error, se enviara un mensaje de error indicando el motivo.
@@ -15,6 +17,9 @@ router.post('/register', (req, res, next) => {
   if (!id || !password) {
     return res.status(400).json({ status: 'error', message: 'Email and password are required' });
   }
+  if (!validator.isEmail(id)) {
+    return res.status(400).json({ status: 'error', message: 'Invalid email' });
+  }
   next();
 }, passport.authenticate('register', { failureRedirect: '/registerfail', failureFlash: true }), async(req, res) => {
   res.send({ status: 'success', message: 'The account was created successfully' });
@@ -23,20 +28,19 @@ router.post('/register', (req, res, next) => {
 //mediante passport se realiza el inciio de sesion del usuario previamente registrado
 router.post('/login', (req, res, next) => {
   const { id, password } = req.body;
-
   if (!id || !password) {
     return res.status(400).send({ status: "error", message: "email and password are required" });
   }
-
+  if (!validator.isEmail(id)) {
+    return res.status(400).json({ status: 'error', message: 'Invalid email' });
+  }
   next();
 }, passport.authenticate('login', { failureRedirect: '/loginfail', failureFlash: true }), async(req, res) => {
- 
   req.session.user={
       id:req.user.id,names:req.user.names, lastname:req.user.lastnames,age:req.user.age,avatar:req.user.avatar,alias:req.user.alias
   }
   res.send({status:"success", message:`You are now loged`})
-
-})
+});
 //se destruye la sesion 
 router.post('/logout',isAutenticated, async(req,res)=>{
   req.session.destroy()
@@ -49,6 +53,9 @@ router.delete('/deleteaccount', isAutenticated, async (req, res, next) => {
   if (!id || !password) {
     return res.status(400).send({ status: 'error', error: 'Missing credentials' });
   }
+  if (!validator.isEmail(id)) {
+    return res.status(400).json({ status: 'error', message: 'Invalid email' });
+  }
   next();
 }, passport.authenticate('deleteaccount',{failureRedirect:'/deleteaccountfail',failureFlash: true}), async(req,res)=>{
   res.send({status:"success", message:"The account was deleted"})
@@ -58,6 +65,9 @@ router.delete('/deleteaccount', isAutenticated, async (req, res, next) => {
 router.post('/recover', async(req,res)=>{
   const {id}=req.body;
   const restoreURL=config.url.mainurl
+  if (!validator.isEmail(id)) {
+    return res.status(400).json({ status: 'error', message: 'Invalid email' });
+  }
   const recoveryToken=jwt.sign({id},'Nosequeponer01',{expiresIn:600})
   const mailer = new MailingService();
   //verifica que la cuenta exista, antes de enviar un correo de recuperacion
