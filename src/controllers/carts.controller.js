@@ -177,7 +177,7 @@ export const cartsController = {
       const cId = parseInt( req.params.cid )
       const pId = parseInt( req.params.pid )
       if(isNaN(pId) || isNaN(cId)){
-        return res.send({description:'Invalid parameters, they must be numerical'})
+        return res.send({description:'Invalid parameters, cid y pid must be numerical'})
       }
 
       const cartFound = await cartDAO.getById(cId)
