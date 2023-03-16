@@ -17,8 +17,19 @@ const initializePassport=()=>{
             const {names,lastname,age,avatar,alias,phone,adress,CountryCode}=req.body
             //se suma el codigo del area al numero de telefono para generar la cadena completa
             let Phone= CountryCode+phone;
-            if(!names||!id||!lastname||!age||!avatar||!alias||!Phone||!adress)return done(null, false, {message:"All fields are needed"})
-            //se verifica que la edad sea numerica, s no, se envia una advertencia 
+            const requiredCredentials = ['names', 'id', 'lastname', 'age', 'avatar', 'alias', 'phone', 'adress', 'CountryCode'];
+            const missingCredentials = [];
+            // Verificar si cada credencial requerida está presente en la solicitud
+            requiredCredentials.forEach((credential) => {
+              if (!req.body[credential]) {
+                missingCredentials.push(credential);
+              }
+            }); 
+            // Si faltan algunas credenciales, devolver un mensaje de error que las identifique
+            if (missingCredentials.length > 0) {
+              return done(null, false, { message: `Missing credentials: ${missingCredentials.join(', ')}` });
+            }
+           //se verifica que la edad sea numerica, s no, se envia una advertencia 
             let typeofage=parseInt(age)
             if(isNaN(typeofage))return done(null, false, {message:"Age must be a number"})
             //se verifica que no exista un usuario con el mismo email
@@ -26,7 +37,7 @@ const initializePassport=()=>{
             if(exist) return done(null,false,{message:"User already exist"})
             //se verifica que no exista un usuario con el mismo alias
             const existAlias =await userService.findOne({alias:alias})
-            if(existAlias) return done(null,false,{message:"The alsias is taken"})
+            if(existAlias) return done(null,false,{message:"The alias is taken"})
             //se genera el nuevo usuario y se realiza el hasheo de la contraseña
             const newUSer={
                 id,names,lastname,age,avatar,alias,Phone,adress,

@@ -6,7 +6,7 @@ import isAutenticated from '../middleware/isautenticated.js'
 const router= Router(); 
 
 router.get('/', async(req,res)=>{
-  res.send({status:'sucess',message:"the API is working"})
+  res.send({status:'sucess',message:"the API is working, to see the detailed routes, please go to https://github.com/Erneststomp/railway-LopezLopezErnestoEduardo and verify with the readme.md"})
 })
 
 //se deja una vista con handlebars al login, ya que para entrar al chat es necesario el inicio de sesion, ya que es necesario por la implementacion de socket.
@@ -55,52 +55,6 @@ router.get('/chat/:id', isAutenticated, async (req, res) => {
     }));
   res.render('chatpersonal.handlebars', { userData: req.session.user, chats: chat });
 });
-
-// router.get('/', async(req,res)=>{
-//   if(req.session.user){
-//       let sesionUser=req.session.user
-//       let characters =  await productDAO.getAll()
-//       let characterData = characters.map(char => {
-//           return {
-//               name: char.name,
-//               thumbnail: char.thumbnail,
-//               price: char.price,
-//               stock: char.stock,
-//               description: char.description
-//           }
-//       })
-//       res.render('home.handlebars',{userData:sesionUser, characters:characterData})
-//   }else{
-//       res.redirect('/login');
-//   }
-// })
-
-// router.post('/logout', async(req,res)=>{
-//     if(req.session.user){
-//         let sesionUser=req.session.user
-//         res.render('logout.handlebars',{userData:sesionUser})
-//         req.session.destroy()
-//     }else{
-//         res.redirect('/login');
-//     }    
-// })
-
-// router.get('/api/productos-test', async(req,res)=>{
-//     res.render('hometable.handlebars')
-// }) 
-
-
-// router.get('/restore', async(req, res,) => {
-//   res.render('recoverPassword.handlebars')
-// })
-
-// router.get('/register', async(req,res)=>{
-//   if(req.session.user){
-//     res.redirect('/');}
-//   else{
-//     res.render('register.handlebars')
-//   }
-// })
 
 
 const infodelProceso = {

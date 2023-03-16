@@ -10,17 +10,32 @@ import isAutenticated from '../middleware/isautenticated.js'
 const router= Router();
 //mediante passport se realiza el registro de los datos del nuevo usuario, enc aso de que exista un error, se enviara un mensaje de error indicando el motivo.
 //al registrarse un usuario, se genera un carrito nuevo con el id del email
-router.post('/register', passport.authenticate('register',{failureRedirect:'/registerfail',failureFlash: true}), async(req,res)=>{
-  res.send({status:"success", message:"The acount was created successfully"})
-  //res.redirect('/registersucced')
-})
+router.post('/register', (req, res, next) => {
+  const { id, password } = req.body;
+  if (!id || !password) {
+    return res.status(400).json({ status: 'error', message: 'Email and password are required' });
+  }
+  next();
+}, passport.authenticate('register', { failureRedirect: '/registerfail', failureFlash: true }), async(req, res) => {
+  res.send({ status: 'success', message: 'The account was created successfully' });
+});
+
 //mediante passport se realiza el inciio de sesion del usuario previamente registrado
-router.post('/login',passport.authenticate('login',{failureRedirect:'/loginfail',failureFlash: true}) ,async(req,res)=>{
+router.post('/login', (req, res, next) => {
+  const { id, password } = req.body;
+
+  if (!id || !password) {
+    return res.status(400).send({ status: "error", message: "email and password are required" });
+  }
+
+  next();
+}, passport.authenticate('login', { failureRedirect: '/loginfail', failureFlash: true }), async(req, res) => {
+ 
   req.session.user={
       id:req.user.id,names:req.user.names, lastname:req.user.lastnames,age:req.user.age,avatar:req.user.avatar,alias:req.user.alias
   }
   res.send({status:"success", message:`You are now loged`})
-  //res.redirect('/');
+
 })
 //se destruye la sesion 
 router.post('/logout',isAutenticated, async(req,res)=>{
@@ -29,10 +44,15 @@ router.post('/logout',isAutenticated, async(req,res)=>{
 })
 
 //la cuenta es borrada de la base de datos, mediante la implementacion de passport, al mismo tiempo el carrito unico que cuenta con id del correo se elimina tambien
-router.delete('/deleteaccount',isAutenticated, passport.authenticate('deleteaccount',{failureRedirect:'/deleteaccountfail',failureFlash: true}), async(req,res)=>{
+router.delete('/deleteaccount', isAutenticated, async (req, res, next) => {
+  const { id, password } = req.body;
+  if (!id || !password) {
+    return res.status(400).send({ status: 'error', error: 'Missing credentials' });
+  }
+  next();
+}, passport.authenticate('deleteaccount',{failureRedirect:'/deleteaccountfail',failureFlash: true}), async(req,res)=>{
   res.send({status:"success", message:"The account was deleted"})
-  //res.redirect('/registersucced')
-})
+});
 
 //si no se recuerda la contraseña, se enviara un token para el reestablecimiento, mediante email, para poder registrar una nueva
 router.post('/recover', async(req,res)=>{
