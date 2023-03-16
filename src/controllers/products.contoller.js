@@ -50,8 +50,13 @@ export const productsController = {
         const allProducts = await productDAO.getAll()
         
         const itemProduct = allProducts.find(item => item.code == req.body.code) 
-        
-      console.log(req.body)
+      if(isNaN(parseInt( req.body.price ))){
+        req.body.price=0
+      }
+      if(isNaN(parseInt( req.body.stock ))){
+        req.body.stock=0
+      }
+
         if(typeof (itemProduct) == 'undefined'){
 
           const getNewId = () => {

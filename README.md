@@ -1,4 +1,4 @@
-link al proyecto desplegado en railway (solo /login y /chat (tambien incluye la ruta /chat/:id) muestran plantillas siendo id el email a visualizar en el chat): https://railway-lopezlopezernestoeduardo-production.up.railway.app/
+link al proyecto desplegado en railway (solo /login y /chat muestran plantillas (tambien incluye la ruta /chat/:id) siendo id el email a visualizar en el chat): https://railway-lopezlopezernestoeduardo-production.up.railway.app/
 
 Diagrama base Body JSON Postman, para la ruta: /login con el metodo post para iniciar sesion
 {
@@ -72,8 +72,10 @@ Para la ruta /:cid con el metodo DELETE elimina el carrito correspondiente al id
 ////////////////////////////////////////////////////////////////////////////////////
 Diagrama base Body JSON Postman, para la ruta: /api/products con el metodo POST para agregar un nuevo pokemon
 el id de cada pokemon se autogenera numericamente (no se implementa el _id de mongo para facilitar su busqueda por ruta)
+tecnicamente no es necesario ningun dato, puesto que en caso de faltar, se autoocomplementara con 0 en el caso de precio o stock, y los demas, indicaran que no existe el respectivo campo.
+si los campos de price y stock no son enviados como numero, entonces se procedera a definirlos como 0.
+si el codigo no es enviado se generara uno automaticamente, pero en caso de que exista otro producto similar los considerara distintos.
 {
-	"timestamp": 1673483039787,
 	"name": "Venasaur N.º002",
 	"description": "Este Pokémon nace con una semilla en el lomo, que brota con el paso del tiempo.",
 	"code": "15fa3asd3-7c95-4e7f-a90f-ba3a32e3473d",
