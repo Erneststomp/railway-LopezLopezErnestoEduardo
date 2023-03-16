@@ -72,10 +72,10 @@ export const productsController = {
             name: req.body.name ? req.body.name : 'No name',
             description: req.body.description ? req.body.description : 'No description',
             code: req.body.code ? req.body.code : crypto.randomUUID(),
-            thumbnail: req.body.thumbnail,
+            thumbnail: req.body.thumbnail ? req.body.thumbnail : 'No image',
             price: req.body.price ? parseInt( req.body.price ) : 0,
             stock: req.body.stock ? parseInt( req.body.stock ) : 0,
-            type: req.body.type ? req.body.type : 0,
+            type: req.body.type ? req.body.type : 'unknown',
           } 
 
           await productDAO.addItem(newProduct)
