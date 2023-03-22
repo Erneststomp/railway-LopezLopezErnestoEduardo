@@ -75,7 +75,6 @@ const initializePassport=()=>{
     passport.use('login',new localStrategy({usernameField:'id'},
     async(id,password,done)=>{
         try{
-            id=jwt.verify(id,'Nosequeponer01');
             const user =await userService.findOne({id:id})
             //verifica que exista el email
             if(!user) return done(null, false,{message:"There is no user with this email, please verify or register"})
