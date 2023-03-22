@@ -1,5 +1,7 @@
 link al proyecto desplegado en railway (solo /login y /chat muestran plantillas (tambien incluye la ruta /chat/:id) siendo id el email a visualizar en el chat): https://railway-lopezlopezernestoeduardo-production.up.railway.app/
 
+al entrar a la ruta base / verificara si esta logueado, si no, enviara al login, otro caso enviara el api/products, es la misma verificacion para borrar a un usuario o entrar al chat, pero se implementa diferente, ya que para estos casos, enviara la advertencia de que debe loguearse en lugar de redirigir al login, se implmenta asi, para diferenciar que al tratar de acceder a una ruta restringida, debe iniciar sesion y no se confunda con una redireccion erronea
+
 Diagrama base Body JSON Postman, para la ruta: /login con el metodo post para iniciar sesion
 {
     	"id":"ernesto.lopez.lbm@outlook.com",
