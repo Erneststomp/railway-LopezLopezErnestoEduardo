@@ -50,12 +50,12 @@ export const productsController = {
         const allProducts = await productDAO.getAll()
         
         const itemProduct = allProducts.find(item => item.code == req.body.code) 
-      if(isNaN(parseInt( req.body.price ))){
+        if(req.body.price){if( isNaN(parseInt(req.body.price)) ||parseInt(req.body.price) < 0){
         req.body.price=0
-      }
-      if(isNaN(parseInt( req.body.stock ))){
+      }}
+      if(req.body.stock){if(isNaN(parseInt(req.body.stock)) ||parseInt(req.body.stock) < 0){
         req.body.stock=1
-      }
+      }}
 
         if(typeof (itemProduct) == 'undefined'){
 
@@ -107,8 +107,8 @@ export const productsController = {
         if(isNaN(pId) ){
           return res.send({description:'Invalid product ID, it must be numerical'})
         }
-        if(req.body.price){if(isNaN(parseInt(req.body.price))){ return res.send({description:'Invalid price, it must be numerical, the product will not be updated'})}}
-        if(req.body.stock){if(isNaN(parseInt(req.body.stock))){ return res.send({description:'Invalid stock, it must be numerical, the product will not be updated'})}}
+        if(req.body.price){if(isNaN(parseInt(req.body.price))||parseInt(req.body.price) < 0){ return res.send({description:'Invalid price, it must be numerical and positive, the product will not be updated'})}}
+        if(req.body.stock){if(isNaN(parseInt(req.body.stock))||parseInt(req.body.stock) < 0){ return res.send({description:'Invalid stock, it must be numerical and positive, the product will not be updated'})}}
         const productFound = await productDAO.getById(pId)
         if (!productFound || productFound ==[]) {
           res.status(422).json({ description: 'Product not found.' })
