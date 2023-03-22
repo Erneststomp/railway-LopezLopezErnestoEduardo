@@ -75,8 +75,8 @@ Para la ruta /:cid con el metodo DELETE elimina el carrito correspondiente al id
 ////////////////////////////////////////////////////////////////////////////////////
 Diagrama base Body JSON Postman, para la ruta: /api/products con el metodo POST para agregar un nuevo pokemon
 el id de cada pokemon se autogenera numericamente (no se implementa el _id de mongo para facilitar su busqueda por ruta)
-tecnicamente no es necesario ningun dato, puesto que en caso de faltar, se autoocomplementara con 1 en el caso de precio o stock, y los demas, indicaran que no existe el respectivo campo.
-si los campos de price y stock no son enviados como numero, enviara un mensaje de error.
+tecnicamente no es necesario ningun dato, con excepcion de un nombre, puesto que en caso de faltar, se autoocomplementara con 1 en el caso de precio o stock, y los demas, indicaran que no existe el respectivo campo.
+si los campos de price y stock no son enviados como numero, enviara un mensaje de error, en cambio si no se envian se autosetearan.
 si el codigo no es enviado se generara uno automaticamente, pero en caso de que exista otro producto similar los considerara distintos.
 {
 	"name": "Venasaur N.º002",
