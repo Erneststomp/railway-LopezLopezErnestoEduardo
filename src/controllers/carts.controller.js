@@ -41,7 +41,7 @@ export const cartsController = {
       } else if (!cartFound.products ) {
         return { data: 'error',description:`Cart found, content 0 products.`,data:[]}
       }
-      else {
+      {
         let productTotalPayment = 0;
         let totalProductQuantity = 0; 
         cartFound.products = cartFound.products.map((item) => {
@@ -63,7 +63,7 @@ export const cartsController = {
         });
         const totalProductPayment = cartFound.products.reduce((total, item) => total + (item.productTotalPayment || 0), 0);
         return { data: cartFound.products, totalPayment: totalProductPayment, totalQuantity: totalProductQuantity };
-     }
+      }
     } catch (error) {
         console.warn({class:`cartsController`,method:`getAllProductListToByCartId: async (req, res)`,description: error})
         res.status(500).json({description: `Internal Server Error,please contact administrator `})
@@ -201,6 +201,21 @@ export const cartsController = {
       res.status(500).json({description: `Internal Server Error,please contact administrator `})
     }
   },
+  deleteProductToCartByIdAfterpurchase: async (req, res,productId,cid) => {
+    try {
+      const cId = cid
+      const pId = productId
+      const cartFound = await cartDAO.getById(cId)
+      const productFound = await productDAO.getById(pId)
+        cartFound.timestamp = Date.now()
+        cartFound.products = cartFound.products.filter( item => item.id !== pId )
+        await cartDAO.editById(cartFound,cId)
+    } catch (error) {
+      console.warn({class:`cartsController`,method:`deleteProductToCartById: async (req, res)`,description: error})
+      res.status(500).json({description: `Internal Server Error,please contact administrator `})
+    }
+  },
+
 
   deleteCartById: async (req, res) => {
     try {
@@ -393,6 +408,19 @@ export const cartsController = {
       res.status(500).json({ description: `Internal Server Error,please contact administrator ` });
     }
   },
+  deleteProductToCartAfterpurchase: async (req, res,productId,cId) => {
+    try {
+          const pId = productId
+          const cartFound = await personalCartDAO.getPersonalById(cId)
+          const productFound = await productDAO.getById(pId)
+            cartFound.timestamp = Date.now()
+            cartFound.products = cartFound.products.filter( item => item.id !== pId )
+            await personalCartDAO.editById(cartFound,cId)
+    } catch (error) {
+      console.warn({class:`cartsController`,method:`deleteProductToCartById: async (req, res)`,description: error})
+      res.status(500).json({description: `Internal Server Error,please contact administrator `})
+    }
+  }, 
   
 
 

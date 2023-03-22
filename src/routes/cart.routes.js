@@ -6,7 +6,7 @@ import Handlebars from 'handlebars';
 import fs from 'fs';
 import __dirname from '../utils.js';
 import path from 'path';
-
+import productsController from '../controllers/products.contoller.js';
 // Get Cart List, muestra todos los carritos que hay, en este caso son carritos generados por ruta, no son los carritos personales, estos no estan protegidos pro inicio de sesion
 //todos los cId son numericos aqui, pues son generados con un iD numerico
 router.get('/', cartsController.getcartList)
@@ -27,7 +27,7 @@ router.get('/:cid/products/', async(req,res)=>{
     return res.status(400).json({ status: 'error', message: 'The cid parameter must be a number' });
   }
       const DetailedCart = await cartsController.getAllProductListByCartId(req,res)
-      if(DetailedCart.data='error'){
+      if(DetailedCart.data=='error'){
         return res.status(422).json({description:`error`,DetailedCart})
       }else{
         return res.status(200).json({description:`Cart Found`,DetailedCart})
@@ -42,7 +42,7 @@ router.post('/:cid/products/', async(req,res)=>{
           return res.status(400).json({ status: 'error', message: 'The cid parameter must be a number' });
         }
         const DetailedCart = await cartsController.getAllProductListByCartId(req,res)
-        if(DetailedCart.data='error'){
+        if(DetailedCart.data=='error'){
           return res.status(422).json({description:`error`,DetailedCart})
         }
         const id=process.env.EMAIL_ADDRESS;
@@ -59,12 +59,22 @@ router.post('/:cid/products/', async(req,res)=>{
             subject:'Purchase confirmation',
             html: html
           });
-
+          let fecha=new Date();
+          const neworder={
+            useremail:'email@fake.com',
+            username:'Test Name',
+            userphone:'Testh Phone',
+            adress:'Test Adress',
+            date:fecha.toUTCString(),
+            items:DetailedCart
+          }
+          productsController.addNewOrder(req,res,neworder)
           DetailedCart.data.forEach(async (product) => {
             try {
               let productId=product.id;
               let soldStock=product.quantity;
               await productsController.updateSoldProductById(productId, soldStock, req, res)
+              await cartsController.deleteProductToCartByIdAfterpurchase(req,res,productId,cid)
             } catch (error) {
               console.warn({class:`productsController`,method:`updatetProduct: async (req, res)`,description:error})
               res.status(500).json({description: `Internal Server Error,please contact administrator`})

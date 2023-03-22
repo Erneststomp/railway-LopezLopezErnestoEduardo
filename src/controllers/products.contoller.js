@@ -1,4 +1,5 @@
 import {productDAO} from '../dao/product/index.js'
+import { ordersDAO } from '../dao/orders/index.js';
 
 //----------* PRODUCT CONTROLLER *----------//
 export const productsController = {
@@ -194,6 +195,16 @@ export const productsController = {
       res.status(500).json({description: `Internal Server Error,please contact administrator`})   
     }
   },
+  addNewOrder: async (req, res,neworder) => {
+    try {
+        await ordersDAO.addItem(neworder)
+    } 
+    catch (error) {
+      console.warn({class:`productsController`,method:`addNewProduct: async (req, res)`,description:error})
+      res.status(500).json({description: `Internal Server Error,please contact administrator`})        
+    }
+
+}
 
 }
 export default productsController

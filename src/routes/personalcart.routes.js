@@ -76,7 +76,6 @@ router.post('/:cid/products/',isAutenticated, async(req,res)=>{
         let user=await userService.findOne({id:id})
         if(!user) return res.send({status:"error",error:"There is no user with this email, please verify or register"})
         const DetailedCart = await cartsController.getAllProductListByPersonalCartId(req,res)
-        const restoreURL=config.url.mainurl
         //se llama a nodemailer
         const mailer = new MailingService();
         //se crea un template para que el contenido del email que se enviara, contenga los detalles de los productos que se compraran
@@ -93,13 +92,24 @@ router.post('/:cid/products/',isAutenticated, async(req,res)=>{
             subject:'Purchase confirmation',
             html: html
           }); 
-
+          let fecha=new Date();
+          const neworder={
+            useremail:id,
+            username:user.names+' '+user.lastname,
+            userphone:user.Phone,
+            adress:user.adress,
+            date: fecha.toUTCString(),
+            items:DetailedCart
+          }
+          productsController.addNewOrder(req,res,neworder)
           //se realiza una llamada a modificar el stock de cada producto una vez que se genere la compra.
           DetailedCart.data.forEach(async (product) => {
             try {
               let productId=product.id;
               let soldStock=product.quantity;
+              let cId=id;
               await productsController.updateSoldProductById(productId, soldStock, req, res)
+              cartsController.deleteProductToCartAfterpurchase(req,res,productId,cId)
             } catch (error) {
               console.warn({class:`productsController`,method:`updatetProduct: async (req, res)`,description:error})
               res.status(500).json({description: `Internal Server Error,please contact administrator`})
