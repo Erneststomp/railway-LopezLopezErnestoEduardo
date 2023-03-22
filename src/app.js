@@ -41,9 +41,9 @@ app.use(express.json());
 app.use(session({
     store: MongoStore.create({
         mongoUrl:config.mongo.urlmongo,
-        ttl:600
+        ttl:process.env.ExpirationTime
     }),
-    secret: "nosequeponer000",
+    secret: process.env.secretstring,
     resave:true,
     saveUninitialized:true,
 })); 
@@ -85,17 +85,6 @@ io.on('connection', socket=>{
         const logtest = await testProducts.getTest();
         io.emit('logtest',logtest)
     }) 
-
-    // socket.on('cartsredirect',async()=>{
-    //     let destination = config.url.mainurl+'/api/carts';
-    //     io.emit('cartredirect', destination);
-    // })
-
-    // socket.on('thispokemonredirect',async(id)=>{
-    //     id=id.id+1
-    //     let destination = config.url.mainurl+'/api/products/'+id;
-    //     io.emit('pokemonredirect', destination); 
-    // })
 
     socket.on('messagereq',async()=>{
         let log =  await chatDAO.getAll()

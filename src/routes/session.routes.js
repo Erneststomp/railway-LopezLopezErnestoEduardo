@@ -68,7 +68,7 @@ router.post('/recover', async(req,res)=>{
   if (!validator.isEmail(id)) {
     return res.status(400).json({ status: 'error', message: 'Invalid email' });
   }
-  const recoveryToken=jwt.sign({id},'Nosequeponer01',{expiresIn:600})
+  const recoveryToken=jwt.sign({id},process.env.secretstring,{expiresIn:process.env.ExpirationTime})
   const mailer = new MailingService();
   //verifica que la cuenta exista, antes de enviar un correo de recuperacion
   let user=await userService.findOne({id:id})
@@ -92,7 +92,7 @@ router.post('/recover', async(req,res)=>{
 router.put('/restore', async(req, res) => {
   try{
     let{newPassword,token}=req.body
-    let {id}=jwt.verify(token,'Nosequeponer01');
+    let {id}=jwt.verify(token,process.env.secretstring);
     let user=await userService.findOne({id:id})
     if(!user) return res.send({status:"error",error:"Invalid Token"})
     user.password=createHash(newPassword)

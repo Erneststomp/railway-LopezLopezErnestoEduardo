@@ -89,12 +89,17 @@ const infodelProceso = {
   nodeVersion: process.version,
   // [-] Carpeta del proyecto
   carpeta: process.argv[1],
+  PORT:process.env.PORT,
+  ProjectURL: process.env.URLGENERAL,
+  EMAIL_ADDRESS: process.env.EMAIL_ADDRESS,
+  URLMONGO: process.env.MongoURL,
+  expirationTime:process.env.ExpirationTime,
+  secret:process.env.secretstring,
   // [-] Memoria total reservada (rss)
   memoria:  ` ${Math.round( JSON.stringify(process.memoryUsage.rss())/ 1024 / 1024 * 100) / 100} MB`,
 }
 
 router.get('/info', async(req, res,) => {
-  console.log('/info')
   const data = infodelProceso
   res.render('info', {data})
 })
