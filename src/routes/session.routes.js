@@ -39,7 +39,7 @@ router.post('/login', (req, res, next) => {
   req.session.user={
       id:req.user.id,names:req.user.names, lastname:req.user.lastnames,age:req.user.age,avatar:req.user.avatar,alias:req.user.alias
   }
-  res.send({status:"success", message:`You are now loged`})
+  res.redirect('/api/products')
 });
 //se destruye la sesion 
 router.post('/logout',isAutenticated, async(req,res)=>{
