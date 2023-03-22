@@ -7,12 +7,16 @@ import userService from "../public/users.js";
 const router= Router(); 
 
 router.get('/', async(req,res)=>{
-  res.send({status:'sucess',message:"the API is working, to see the detailed routes, please go to https://github.com/Erneststomp/railway-LopezLopezErnestoEduardo and verify with the readme.md , for login go to the route /login and for chat go to route /chat all other routes have no templates"})
+  res.redirect('/login')
 })
 
 //se deja una vista con handlebars al login, ya que para entrar al chat es necesario el inicio de sesion, ya que es necesario por la implementacion de socket.
 router.get('/login', async(req,res)=>{
     res.render('login.handlebars')
+})
+//se deja una vista con handlebars al register
+router.get('/register', async(req,res)=>{
+  res.render('register.handlebars')
 })
 //en caso de que no se pueda realizar el login, se envia un mensaje sobre el error que impidio el inciio de sesion
 router.get('/loginfail', async(req, res) => {
@@ -29,6 +33,13 @@ router.get('/registerfail', async(req, res) => {
 router.get('/recoverfail', async(req,res)=>{
   const errorMessage = req.flash('error')[0];
   res.send({status:"error",error:errorMessage})
+})
+router.get('/restore', async(req, res,) => {
+  res.render('recoverPassword.handlebars')
+})
+
+router.get('/restoreFail', async(req, res,) => {
+  res.render('restoreFail.handlebars')
 })
 
 //se renderiza la planttilla de handlebars con el registro de los chats, esta es encesario ay que hace uso de socket.io

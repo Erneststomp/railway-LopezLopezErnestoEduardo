@@ -54,7 +54,7 @@ export const productsController = {
         req.body.price=0
       }
       if(isNaN(parseInt( req.body.stock ))){
-        req.body.stock=0
+        req.body.stock=1
       }
 
         if(typeof (itemProduct) == 'undefined'){
@@ -79,15 +79,18 @@ export const productsController = {
             code: req.body.code ? req.body.code : crypto.randomUUID(),
             thumbnail: req.body.thumbnail ? req.body.thumbnail : 'No image',
             price: req.body.price ? parseInt( req.body.price ) : 0,
-            stock: req.body.stock ? parseInt( req.body.stock ) : 0,
+            stock: req.body.stock ? parseInt( req.body.stock ) : 1,
             type: req.body.type ? req.body.type : 'unknown',
           } 
-
+          if(newProduct.name!=='No name'){
           await productDAO.addItem(newProduct)
-          res.status(201).json({description:`new product successfully created`,data:newProduct})
+          res.status(201).json({description:`new product successfully created`,data:newProduct})}
+          else{
+            res.status(422).json({description:`Name is obligatory, all other fields could be ommited, and edited after, but at leats you should set a valid name for the product`})
+          }
         }
         else {  
-          res.status(422).json({description: `Product with code ${req.body.code} already exists, product not added.`})
+          res.status(422).json({description: `Product with code ${req.body.code} already exists, product not added, if you weant to modify the stock, price or another field, please use the correct method to update`})
         }
       } 
       catch (error) {
@@ -104,6 +107,8 @@ export const productsController = {
         if(isNaN(pId) ){
           return res.send({description:'Invalid product ID, it must be numerical'})
         }
+        if(req.body.price){if(isNaN(parseInt(req.body.price))){ return res.send({description:'Invalid price, it must be numerical, the product will not be updated'})}}
+        if(req.body.stock){if(isNaN(parseInt(req.body.stock))){ return res.send({description:'Invalid stock, it must be numerical, the product will not be updated'})}}
         const productFound = await productDAO.getById(pId)
         if (!productFound || productFound ==[]) {
           res.status(422).json({ description: 'Product not found.' })
@@ -116,12 +121,12 @@ export const productsController = {
             description: req.body.description ? req.body.description : productFound.description,
             code: req.body.code ? req.body.code : productFound.code,
             thumbnail: req.body.thumbnail ? req.body.thumbnail : productFound.thumbnail,
-            price: req.body.price ? parseInt( req.body.price ) : productFound.price,
-            stock: req.body.stock ? parseInt( req.body.stock ) : productFound.stock,
-            type: req.body.type ? parseInt( req.body.type ) : productFound.type,
+            price: isNaN(parseInt(req.body.price)) ? productFound.price : parseInt(req.body.price),
+            stock: isNaN(parseInt(req.body.stock)) ? productFound.stock : parseInt(req.body.stock),
+            type: req.body.type ? req.body.type : productFound.type,
           }
-          await productDAO.editById(editedProduct,pId)
 
+          await productDAO.editById(editedProduct,pId)
           res.status(200).json({description:`Product with id=${pId} updated`,editedProduct})
         }
       } catch (error) {

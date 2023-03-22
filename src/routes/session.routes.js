@@ -80,7 +80,7 @@ router.post('/recover', async(req,res)=>{
     html:`<div>
     <h1>To restore your password, please </h1>
     <p>De click en el siguiente enlace</p> 
-    <a href="${restoreURL}/restore?tkn=${recoveryToken}">Reestablecer</a>
+    <a href="${restoreURL}/restore?tkn=${recoveryToken}">Reestablecer (de momento no se encuentra activo, usar psotman)</a>
     <p>Cuando lo use en Postman, recuerde que debe enviar el token y el newPassword como parametros a la ruta /resore con un POST</p>
     <p>Su token es: </p>
     <p>${recoveryToken}</p>

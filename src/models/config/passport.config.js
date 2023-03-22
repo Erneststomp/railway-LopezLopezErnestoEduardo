@@ -14,10 +14,10 @@ const initializePassport=()=>{
     async(req,id,password,done)=>{
         try{
             //se  reciben los datos desde el body 
-            const {names,lastname,age,avatar,alias,phone,adress,CountryCode}=req.body
+            const {names,lastname,age,avatar,alias,phone,adress,CountryCode,passwordconf}=req.body
             //se suma el codigo del area al numero de telefono para generar la cadena completa
             let Phone= CountryCode+phone;
-            const requiredCredentials = ['names', 'id', 'lastname', 'age', 'avatar', 'alias', 'phone', 'adress', 'CountryCode'];
+            const requiredCredentials = ['names', 'id', 'lastname', 'age', 'avatar', 'alias', 'phone', 'adress', 'CountryCode','passwordconf'];
             const missingCredentials = [];
             // Verificar si cada credencial requerida está presente en la solicitud
             requiredCredentials.forEach((credential) => {
@@ -25,11 +25,15 @@ const initializePassport=()=>{
                 missingCredentials.push(credential);
               }
             }); 
+            if(password!==passwordconf)return done(null, false, {message:"Password and password confirmation didnt match"})
             // Si faltan algunas credenciales, devolver un mensaje de error que las identifique
             if (missingCredentials.length > 0) {
               return done(null, false, { message: `Missing credentials: ${missingCredentials.join(', ')}` });
             }
-           //se verifica que la edad sea numerica, s no, se envia una advertencia 
+            const patron = /^\+\d+$/;
+            if (!patron.test(CountryCode)) return done(null, false, {message:"Countrycode didnt have a valid format it must be + followed by a number without spaces"})
+            if (!patron.test(Phone)) return done(null, false, {message:"Phone number didnt have a valid format it must be only numbers"})
+            //se verifica que la edad sea numerica, si no, se envia una advertencia 
             let typeofage=parseInt(age)
             if(isNaN(typeofage))return done(null, false, {message:"Age must be a number"})
             //se verifica que no exista un usuario con el mismo email
@@ -71,6 +75,7 @@ const initializePassport=()=>{
     passport.use('login',new localStrategy({usernameField:'id'},
     async(id,password,done)=>{
         try{
+            id=jwt.verify(id,'Nosequeponer01');
             const user =await userService.findOne({id:id})
             //verifica que exista el email
             if(!user) return done(null, false,{message:"There is no user with this email, please verify or register"})

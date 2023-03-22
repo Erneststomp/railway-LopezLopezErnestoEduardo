@@ -12,6 +12,7 @@ Diagrama base Body JSON Postman, para la ruta: /register con el metodo post para
     	"lastname":"Lopez",
     	"id":"ernesto.lopez.lbm@outlook.com",
     	"password":"1234Ab",
+		"passwordconf":"1234Ab",
     	"age":21,
     	"avatar":"asd",
 		"CountryCode":"+32",
@@ -91,11 +92,8 @@ si se especifica, nos regresa el producto especifico
 la ruta /api/products/:pid con el metodo PUT edita los datos del producto con el respectivo id
 se puede editar cualquier parametetro especifico, no es necesario que se ingresen todos los datos
 {
-		"id": 2,
-		"timestamp": 1659739618951,
 		"name": "Ivysaur N.º002",
 		"description": "Cuando le crece bastante el bulbo del lomo, pierde la capacidad de erguirse sobre las patas traseras.",
-		"code": "25fa3dd3-7c95-4e7f-a90f-ba3a32e3473d",
 		"thumbnail": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/002.png",
 		"price": 125,
 		"stock": 100,
