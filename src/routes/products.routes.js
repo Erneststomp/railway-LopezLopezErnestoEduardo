@@ -5,7 +5,7 @@ import {productsController} from '../controllers/products.contoller.js'
 
 // Delete Product List, elimina todos los productos registrados
 
-router.delete('/', productsController.deleteProductList)
+router.delete('/deleteall', productsController.deleteProductList)
 
 // Get Product List & Get Product by ID, en caso de proprocionarse un ID numerico para acceder a un producto, lo regresa, si no se entrega un id, enviara todos los productos y si se entrega un id no numerico se enviara un mensaje de error
 router.get('/:pid?', async (req,res)=>{
