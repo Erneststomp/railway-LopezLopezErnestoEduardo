@@ -16,7 +16,7 @@ Diagrama base Body JSON Postman, para la ruta: /register con el metodo post para
     	"password":"1234Ab",
 		"passwordconf":"1234Ab",
     	"age":21,
-    	"avatar":"asd",
+    	"avatar":"http://asd.asd.asd",
 		"CountryCode":"+32",
     	"phone":"234234234",
     	"adress":"asd asdasd asd ",
@@ -62,7 +62,7 @@ la ruta /api/carts/:cid/products con el metodo GET nos mostrara todos los elemen
 
 Para la ruta /api/carts/:cid/products  con el metodo PUT para agregar un producto con su respectiva cantidad, al carrito seleccionado si no se especifica se agrega 1 por defecto
 {
-	"pid": 1,
+	"pid": 1
     "quantity":3 (opcional)
 }
 
@@ -90,9 +90,13 @@ si el codigo no es enviado se generara uno automaticamente, pero en caso de que 
 
 para la ruta /api/products/:pid? con el metodo GET nos regresa todos los pokemones si no se especifica el pid
 si se especifica, nos regresa el producto especifico
+como :pid se puede enviar ya sea el objectid "_id" o el "id" que se genera al cargar el articulo, ambos funcionan
+
 
 la ruta /api/products/:pid con el metodo PUT edita los datos del producto con el respectivo id
 se puede editar cualquier parametetro especifico, no es necesario que se ingresen todos los datos
+como :pid se puede enviar ya sea el objectid "_id" o el "id" que se genera al cargar el articulo, ambos funcionan
+
 {
 		"name": "Ivysaur N.º002",
 		"description": "Cuando le crece bastante el bulbo del lomo, pierde la capacidad de erguirse sobre las patas traseras.",
@@ -103,10 +107,11 @@ se puede editar cualquier parametetro especifico, no es necesario que se ingrese
 }
 
 la ruta /api/products/:pid con el metodo DELETE elimina el producto con el id especifico
+como :pid se puede enviar ya sea el objectid "_id" o el "id" que se genera al cargar el articulo, ambos funcionan
 
 la ruta /api/products/deleteall con el metodo DELETE elimina todos los productos del registro
 
-la ruta /api/carts/:cid/products con el metodo POST realizara un proceso de compra (donde se enviara al correo definido en la variable de entorno el mensaje de la compra)
+la ruta /api/carts/:cid/products con el metodo POST realizara un proceso de compra (donde se enviara al correo definido en la variable de entorno el mensaje de la compra y se eliminan los productos del carrito)
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -127,3 +132,4 @@ la ruta /:cid/products/:pid' con el metodo delete, elimina un objeto del carrito
 
 la ruta /carts/:cid/products y la ruta /api/carts/:cid/products con el metodo POST realizaran un proceso de compra, eliminando la cantidad solicitada al stock restante
 (donde se enviara al correo del usuario en la variable de entorno el mensaje de la compra)
+asi como eliminando el contenido del carrito y agregando la compra a la coleccion orders

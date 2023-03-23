@@ -74,13 +74,19 @@ router.post('/:cid/products/', async(req,res)=>{
               let productId=product.id;
               let soldStock=product.quantity;
               await productsController.updateSoldProductById(productId, soldStock, req, res)
-              await cartsController.deleteProductToCartByIdAfterpurchase(req,res,productId,cid)
+              
             } catch (error) {
               console.warn({class:`productsController`,method:`updatetProduct: async (req, res)`,description:error})
               res.status(500).json({description: `Internal Server Error,please contact administrator`})
             }
           }) 
-
+          const products = DetailedCart.data;
+          const productids =[]
+          for (const product of products) {
+            productids.push(product.id)
+          }
+          await cartsController.deleteProductToCartByIdAfterpurchase(req, res, productids, cid);
+          
         res.send({status:'success',message:"Your pourchase has been processed, verify your email"})
     } catch (error) {
       console.warn({class:`cartsController`,method:`getAllProductListToByCartId: async (req, res)`,description: error})

@@ -11,7 +11,10 @@ export class MongoDBContainer {
     //busqueda de elemento dentro de la respectiva coleccion por ID numerico
     getById = async (id) => {
         try {
-            const itemFound = await this.collection.findOne({ id: Number(id) },{_id:0})
+            let itemFound = await this.collection.findOne({ id: Number(id) },{_id:0})
+            if(!itemFound){
+                itemFound = await this.collection.findOne({ _id: id })
+            }
             return itemFound
         } catch (error) {
             console.warn({class:`class MongoDBContainer`, method:`getById= async(id)`,description:error})
@@ -49,7 +52,7 @@ export class MongoDBContainer {
             throw new Error(error);
         }
     }
-    //se edita un onjeto dentro de la respectiva coleccion con un id
+    //se edita un objeto dentro de la respectiva coleccion con un id
     editById = async ({id ,...object}) => {
         try {
             await this.collection.updateOne(
@@ -66,7 +69,10 @@ export class MongoDBContainer {
     //eliminacioin de elemento dentro de la coleccion con un ID numerico
     deleteById = async (id) => {
     try {
-        const itemFound = await this.collection.find({ id: Number(id) })
+        let itemFound = await this.collection.findOne({ id: Number(id) },{_id:0})
+        if(!itemFound){
+            itemFound = await this.collection.findOne({ _id: id })
+        }
 
         if (itemFound && itemFound.length) {
         await this.collection.deleteOne({

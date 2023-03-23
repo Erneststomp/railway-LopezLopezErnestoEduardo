@@ -69,6 +69,7 @@ router.post('/:cid/products/',isAutenticated, async(req,res)=>{
     try {
       //se obtienen los elementos del carrito
         const id=req.params.cid;
+        let cId=id
         if (!validator.isEmail(id)) {
           return res.status(400).json({ status: 'error', message: 'Invalid email' });
         }
@@ -107,14 +108,19 @@ router.post('/:cid/products/',isAutenticated, async(req,res)=>{
             try {
               let productId=product.id;
               let soldStock=product.quantity;
-              let cId=id;
               await productsController.updateSoldProductById(productId, soldStock, req, res)
-              cartsController.deleteProductToCartAfterpurchase(req,res,productId,cId)
+             
             } catch (error) {
               console.warn({class:`productsController`,method:`updatetProduct: async (req, res)`,description:error})
               res.status(500).json({description: `Internal Server Error,please contact administrator`})
             }
           }) 
+          const products = DetailedCart.data;
+          const productids =[]
+          for (const product of products) {
+            productids.push(product.id)
+          }
+          await cartsController.deleteProductToCartAfterpurchase(req,res,productids,cId)
 
         res.send({status:'success',message:"Your pourchase has been processed, verify your email"})
     } catch (error) {

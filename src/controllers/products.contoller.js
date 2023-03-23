@@ -6,10 +6,11 @@ export const productsController = {
   
   getProductById: async (req, res) => {
     try {
-      const pId = parseInt(req.params.pid);
+      let pId = parseInt(req.params.pid);
       if(isNaN(pId) ){
         return res.send({description:'Invalid product ID, it must be numerical'})
       }
+      pId = req.params.pid;
       const productFound = await productDAO.getById(pId)
       if (!productFound) { 
         res.status(200).send({description: `Product not found.`})
@@ -104,10 +105,11 @@ export const productsController = {
   updatetProductById: async (req, res) => {
 
       try {
-        const pId = parseInt(req.params.pid)
+        let pId = parseInt(req.params.pid)
         if(isNaN(pId) ){
           return res.send({description:'Invalid product ID, it must be numerical'})
         }
+        pId=req.params.pid;
         if(req.body.price){if(isNaN(parseInt(req.body.price))||parseInt(req.body.price) < 0){ return res.send({description:'Invalid price, it must be numerical and positive, the product will not be updated'})}}
         if(req.body.stock){if(isNaN(parseInt(req.body.stock))||parseInt(req.body.stock) < 0){ return res.send({description:'Invalid stock, it must be numerical and positive, the product will not be updated'})}}
         const productFound = await productDAO.getById(pId)
@@ -168,10 +170,11 @@ export const productsController = {
   deleteProductById: async (req, res) => {
 
       try {
-        const pId = parseInt(req.params.pid)
+        let  pId = parseInt(req.params.pid)
         if(isNaN(pId) ){
           return res.send({description:'Invalid product ID, it must be numerical'})
         }
+        pId=req.params.pid;
         const productFound = await productDAO.getById(pId)
         
         if (!productFound) {

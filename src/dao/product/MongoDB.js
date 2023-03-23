@@ -1,9 +1,10 @@
 import MongoDBContainer from '../../middleware/api/MongoDBContainer.js'
+import { Schema } from 'mongoose'
 
 export class ProductDAOMongoDB extends MongoDBContainer {
     constructor() {
         super('products', {
-            id: { type: Number, required: true },
+            id: { type: Schema.Types.Mixed, required: true },
             timestamp: {type: Number, required: true },
             name: { type: String, required: true },
             description: { type: String, required: true },

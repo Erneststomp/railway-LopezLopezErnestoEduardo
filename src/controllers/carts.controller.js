@@ -47,6 +47,7 @@ export const cartsController = {
         cartFound.products = cartFound.products.map((item) => {
           let productItem = productFound.find((product) => product.id === item.id);
           const editproductItem = {
+            _id:productItem._id,
             id: productItem.id,
             timestamp: productItem.timestamp,
             name: productItem.name ? productItem.name : 'No name',
@@ -99,15 +100,11 @@ export const cartsController = {
   addProductToCart: async (req, res) => {
     try {
       const cId = parseInt(req.params.cid)
-
-      const pId = parseInt(req.body.pid)
-
+      let pId = parseInt(req.body.pid)
       if(!req.body.pid){
         return res.send({description:'You must send a product id (numerical)'})
-      }
-
+      } 
       const pquantity =  req.body.quantity ? parseInt(req.body.quantity) : 1
-
       if(isNaN(pId) || isNaN(pquantity)||isNaN(cId)){
         return res.send({description:'Invalid parameters, pid, cid and quantity must be numerical (if quantity is not send, or invalid, 1 will be set by default)'})
       }
@@ -116,9 +113,8 @@ export const cartsController = {
       if(!cartFound){
         return res.status(422).json({ description: `Cart ${cId} not found.` })
       }
-      
+      pId=req.body.pid
       const productFound = await productDAO.getById(pId)
-      
       if(!productFound){
         return res.status(422).json({ description: `Product ${pId} not found.` })
       }
@@ -131,13 +127,12 @@ export const cartsController = {
       else if(productFound.stock < pquantity){
         return res.status(422).json({ description: 'insufficient stock.' })
       } 
-      
       const productsInCartsFound = cartFound.products
-      const ProductItemInCarts = productsInCartsFound.find(item=> item.id === parseInt(pId))
+      let ProductItemInCarts = productsInCartsFound.find(item=> item.id === productFound.id)
 
       if(!ProductItemInCarts){
         const newProduct = {
-          id: pId,
+          id: productFound.id,
           quantity: pquantity,
         }
         if(ProductItemInCarts){
@@ -146,9 +141,7 @@ export const cartsController = {
           } 
         }
         cartFound.products.push(newProduct)
-
         await cartDAO.editById(cartFound,cId)
-
         return res.status(200).json({description:`Product ${pId} added to cart ${cId} successfully.`,data:cartFound})
         
       }
@@ -160,7 +153,7 @@ export const cartsController = {
         itemRest.timestamp = Date.now()
         await productDAO.editById({...itemRest,stock},cId)
         cartFound.timestamp = Date.now()
-        cartFound.products = cartFound.products.map( item => item.id !== pId ? item : {...item, quantity: item.quantity + pquantity} )
+        cartFound.products = cartFound.products.map( item => item.id !== productFound.id ? item : {...item, quantity: item.quantity + pquantity} )
         await cartDAO.editById(cartFound,cId)
 
         return res.status(200).json({description: `(${pquantity}) unid(s) of (${productFound.id}) - ${productFound.name} added successfully in Cart.`,data:cartFound})
@@ -175,11 +168,11 @@ export const cartsController = {
   deleteProductToCartById: async (req, res) => {
     try {
       const cId = parseInt( req.params.cid )
-      const pId = parseInt( req.params.pid )
+      let pId = parseInt( req.params.pid )
       if(isNaN(pId) || isNaN(cId)){
         return res.send({description:'Invalid parameters, cid y pid must be numerical'})
       }
-
+      pId =  req.params.pid;
       const cartFound = await cartDAO.getById(cId)
       if(!cartFound){
         return res.status(422).json({ description: `Cart ${cId} not found.` })
@@ -191,11 +184,12 @@ export const cartsController = {
       }
       else{
         cartFound.timestamp = Date.now()
-        cartFound.products = cartFound.products.filter( item => item.id !== pId )
+        cartFound.products = cartFound.products.filter( item => item.id != pId )
+        cartFound.products = cartFound.products.filter( item => item.id != productFound.id )
         await cartDAO.editById(cartFound,cId)
         return res.status(200).json({description: `Producto : (${productFound.id}) - ${productFound.name} was removed from your cart.`,data:cartFound})
       }
-
+ 
     } catch (error) {
       console.warn({class:`cartsController`,method:`deleteProductToCartById: async (req, res)`,description: error})
       res.status(500).json({description: `Internal Server Error,please contact administrator `})
@@ -203,13 +197,15 @@ export const cartsController = {
   },
   deleteProductToCartByIdAfterpurchase: async (req, res,productId,cid) => {
     try {
+      let cartFound={}
       const cId = cid
-      const pId = productId
-      const cartFound = await cartDAO.getById(cId)
-      const productFound = await productDAO.getById(pId)
-        cartFound.timestamp = Date.now()
-        cartFound.products = cartFound.products.filter( item => item.id !== pId )
+      cartFound = await cartDAO.getById(cId)
+
+      for (const pId of productId) {
+        cartFound.products = await cartFound.products.filter( item => item.id !== pId )
         await cartDAO.editById(cartFound,cId)
+      }
+
     } catch (error) {
       console.warn({class:`cartsController`,method:`deleteProductToCartById: async (req, res)`,description: error})
       res.status(500).json({description: `Internal Server Error,please contact administrator `})
@@ -273,7 +269,7 @@ export const cartsController = {
   addProductToPersonalCart: async (req, res) => {
     try {
       const cId = req.params.cid
-      const pId = parseInt(req.body.pid)
+      let pId = parseInt(req.body.pid)
       const pquantity =  req.body.quantity ? parseInt(req.body.quantity) : 1
       if(!req.body.pid){
         return res.send({description:'You must send a numerical product id (pid)'})
@@ -285,7 +281,7 @@ export const cartsController = {
       if(!cartFound){
         return res.status(422).json({ description: `Cart ${cId} not found.` })
       }
-      
+      pId=req.body.pid
       const productFound = await productDAO.getById(pId)
       if(!productFound){
         return res.status(422).json({ description: `Product ${pId} not found.` })
@@ -300,11 +296,11 @@ export const cartsController = {
         return res.status(422).json({ description: 'insufficient stock.' })
       } 
       const productsInCartsFound = cartFound.products
-      const ProductItemInCarts = productsInCartsFound.find(item=> item.id === parseInt(pId))
+      const ProductItemInCarts = productsInCartsFound.find(item=> item.id === productFound.id)
      
       if(!ProductItemInCarts){
         const newProduct = {
-          id: pId,
+          id: productFound.id,
           quantity: pquantity,
         }
         if(ProductItemInCarts){
@@ -312,11 +308,8 @@ export const cartsController = {
             return res.status(422).json({ description: 'insufficient stock.' })
           } 
         }
-
         cartFound.products.push(newProduct)
-
         await personalCartDAO.editById(cartFound,cId)
-
         return res.status(200).json({description:`Product ${pId} added to cart ${cId} successfully.`,data:cartFound})
         
       }
@@ -328,7 +321,7 @@ export const cartsController = {
         itemRest.timestamp = Date.now()
         await productDAO.editById({...itemRest,stock},cId)
         cartFound.timestamp = Date.now()
-        cartFound.products = cartFound.products.map( item => item.id !== pId ? item : {...item, quantity: item.quantity + pquantity} )
+        cartFound.products = cartFound.products.map( item => item.id !== productFound.id? item : {...item, quantity: item.quantity + pquantity} )
         await personalCartDAO.editById(cartFound,cId)
 
         return res.status(200).json({description: `(${pquantity}) unid(s) of (${productFound.id}) - ${productFound.name} added successfully in Cart.`,data:cartFound})
@@ -343,7 +336,7 @@ export const cartsController = {
   deleteProductToPersonalCartById: async (req, res) => {
     try {
       const cId = req.params.cid 
-      const pId = parseInt( req.params.pid )
+      let pId = parseInt( req.params.pid )
       if(!req.body.pid){
         return res.send({description:'You must send a product id (numerical)'})
       }
@@ -354,6 +347,7 @@ export const cartsController = {
       if(!cartFound){
         return res.status(422).json({ description: `Cart ${cId} not found.` })
       }
+      pId =  req.params.pid;
       const productFound = await productDAO.getById(pId)
       if(!productFound){
         return res.status(422).json({ description: `Product ${pId} not found.` })
@@ -361,6 +355,7 @@ export const cartsController = {
       else{
         cartFound.timestamp = Date.now()
         cartFound.products = cartFound.products.filter( item => item.id !== pId )
+        cartFound.products = cartFound.products.filter( item => item.id != productFound.id )
         await personalCartDAO.editById(cartFound,cId)
         return res.status(200).json({description: `Producto : (${productFound.id}) - ${productFound.name} was removed from your cart.`,data:cartFound})
       }
@@ -386,6 +381,7 @@ export const cartsController = {
         cartFound.products = cartFound.products.map((item) => {
           let productItem = productFound.find((product) => product.id === item.id);
           const editproductItem = {
+            _id: productItem._id,
             id: productItem.id,
             timestamp: productItem.timestamp,
             name: productItem.name ? productItem.name : 'No name',
@@ -410,19 +406,17 @@ export const cartsController = {
   },
   deleteProductToCartAfterpurchase: async (req, res,productId,cId) => {
     try {
-          const pId = productId
           const cartFound = await personalCartDAO.getPersonalById(cId)
-          const productFound = await productDAO.getById(pId)
-            cartFound.timestamp = Date.now()
-            cartFound.products = cartFound.products.filter( item => item.id !== pId )
+          for (const pId of productId) {
+            cartFound.products = await cartFound.products.filter( item => item.id !== pId )
             await personalCartDAO.editById(cartFound,cId)
+          }
+
     } catch (error) {
       console.warn({class:`cartsController`,method:`deleteProductToCartById: async (req, res)`,description: error})
       res.status(500).json({description: `Internal Server Error,please contact administrator `})
     }
   }, 
-  
-
 
 }
 
