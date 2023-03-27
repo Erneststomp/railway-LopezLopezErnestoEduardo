@@ -22,6 +22,9 @@ router.post('/register', (req, res, next) => {
   }
   next();
 }, passport.authenticate('register', { failureRedirect: '/registerfail', failureFlash: true }), async(req, res) => {
+  req.session.user={
+    id:req.user.id,names:req.user.names, lastname:req.user.lastnames,age:req.user.age,avatar:req.user.avatar,alias:req.user.alias
+}
   res.send({ status: 'success', message: 'The account was created successfully' });
 });
 

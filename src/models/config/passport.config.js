@@ -30,6 +30,11 @@ const initializePassport=()=>{
             if (missingCredentials.length > 0) {
               return done(null, false, { message: `Missing credentials: ${missingCredentials.join(', ')}` });
             }
+            // Verificar que el avatar sea una URL válida
+            const avatarRegex = /^(ftp|http|https):\/\/[^ "]+$/;
+            if (!avatarRegex.test(avatar)) {
+                return done(null, false, { message: "Invalid avatar, it must be an URL http https or ftp" });
+            }
             const patron = /^\+\d+$/;
             if (!patron.test(CountryCode)) return done(null, false, {message:"Countrycode didnt have a valid format it must be + followed by a number without spaces"})
             if (!patron.test(Phone)) return done(null, false, {message:"Phone number didnt have a valid format it must be only numbers"})

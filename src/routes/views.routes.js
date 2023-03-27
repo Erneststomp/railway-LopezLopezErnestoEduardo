@@ -14,7 +14,11 @@ router.get('/', isLoged, async(req,res)=>{
 
 //se deja una vista con handlebars al login, ya que para entrar al chat es necesario el inicio de sesion, ya que es necesario por la implementacion de socket.
 router.get('/login', async(req,res)=>{
-    res.render('login.handlebars')
+  if(!req.session.user){
+    res.render('login.handlebars')}
+    else{
+      res.redirect('/api/products')
+    }
 })
 //se deja una vista con handlebars al register
 router.get('/register', async(req,res)=>{

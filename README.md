@@ -3,12 +3,14 @@ link al proyecto desplegado en railway (solo /login y /chat muestran plantillas 
 al entrar a la ruta base / verificara si esta logueado, si no, enviara al login, otro caso enviara el api/products, es la misma verificacion para borrar a un usuario o entrar al chat, pero se implementa diferente, ya que para estos casos, enviara la advertencia de que debe loguearse en lugar de redirigir al login, se implmenta asi, para diferenciar que al tratar de acceder a una ruta restringida, debe iniciar sesion y no se confunda con una redireccion erronea
 
 Diagrama base Body JSON Postman, para la ruta: /login con el metodo post para iniciar sesion
+si ya se inicio sesion envia a /api/products
 {
     	"id":"ernesto.lopez.lbm@outlook.com",
-    	"password":"1234Ab",
+    	"password":"1234Ab"
 }
 
 Diagrama base Body JSON Postman, para la ruta: /register con el metodo post para registrar un nuevo usuario
+al registrar se inicia sesion automaticamente
 {
 		"names":"Ernesto",
     	"lastname":"Lopez",
@@ -37,7 +39,7 @@ diagrama base Body JSON Postman para la ruta: /restore con el metodo PUT para es
 diagrama base Body JSON Postman para la ruta: /deleteaccount el metodo PUT para eliminar la cuenta y su carrito personal
 {
 	"id":"ernesto.lopez.lbm@outlook.com",
-    	"password":"1234Ab",
+    	"password":"1234Ab"
 	}
 
 
@@ -63,7 +65,7 @@ la ruta /api/carts/:cid/products con el metodo GET nos mostrara todos los elemen
 Para la ruta /api/carts/:cid/products  con el metodo PUT para agregar un producto con su respectiva cantidad, al carrito seleccionado si no se especifica se agrega 1 por defecto
 {
 	"pid": 1
-    "quantity":3 (opcional)
+    "quantity":3 (opcional, se coloca 1 por defecto)
 }
 
 Para la ruta /:cid/products/:pid con el metodo DELETE nos elimina el producto correspondiente al id del carrito (elimina todos los productos)
@@ -74,8 +76,8 @@ Para la ruta /:cid con el metodo DELETE elimina el carrito correspondiente al id
 
 ////////////////////////////////////////////////////////////////////////////////////
 Diagrama base Body JSON Postman, para la ruta: /api/products con el metodo POST para agregar un nuevo pokemon
-el id de cada pokemon se autogenera numericamente (no se implementa el _id de mongo para facilitar su busqueda por ruta)
-tecnicamente no es necesario ningun dato, con excepcion de un nombre, puesto que en caso de faltar, se autoocomplementara con 1 en el caso de precio o stock, y los demas, indicaran que no existe el respectivo campo.
+el id de cada pokemon se autogenera numericamente, tambien se genera el de mongo
+tecnicamente no es necesario ningun dato, con excepcion de un nombre, puesto que en caso de faltar, se auto complementara con 0 en el caso de precio y 1 para stock, y los demas, indicaran que no existe el respectivo campo.
 si los campos de price y stock no son enviados como numero, enviara un mensaje de error, en cambio si no se envian se autosetearan.
 si el codigo no es enviado se generara uno automaticamente, pero en caso de que exista otro producto similar los considerara distintos.
 {
@@ -123,7 +125,7 @@ se separa su logica debido a que aqui se utiliza el email como id de usuario, lo
 se colcoara 1 en automatico
 {
         "pid": 1,
-    	"quantity":3 (opcional)
+    	"quantity":3 (opcional si no se coloca se enviara 1 en automatico)
 }
 
        
