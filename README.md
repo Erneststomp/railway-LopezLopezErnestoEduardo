@@ -1,10 +1,14 @@
 # Proyecto E-commerce Backend
 
 Puedes acceder al proyecto desplegado en Railway a través de este enlace: https://railway-lopezlopezernestoeduardo-production.up.railway.app/
+ 
+## Rutas con Socket.io
 
-/login: Página de inicio de sesión
-/chat: Página de chat, mostrando plantillas
-/chat/:id: Página de chat para un usuario específico, donde id es el correo electrónico del usuario.
+Página de chat, mostrando plantillas
+Ruta: /chat 
+
+Página para visualizar mensajes del chat para un usuario específico, donde id es el correo electrónico del usuario.
+Ruta: /chat/:id 
 
 El proyecto cuenta con una verificación de inicio de sesión en la ruta base /. 
 Si el usuario no ha iniciado sesión, será redirigido a la página de inicio de sesión. De lo contrario, será redirigido a la ruta /api/products.
@@ -16,6 +20,7 @@ Ruta: /login - Método: POST
 
 Descripcion: Inicia sesión en la aplicación.
 (si ya se inicio sesion envia a /api/products)
+Ejemplo de formato de body JSON en Postman:
 
 	{
 		"id": "ernesto.lopez.lbm@outlook.com",
@@ -26,6 +31,7 @@ Descripcion: Inicia sesión en la aplicación.
 Ruta: /register - Método: POST
 
 Descripcion: Registra un nuevo usuario en la aplicación y lo inicia sesión automáticamente.
+Ejemplo de formato de body JSON en Postman:
 
 	{
 		"names":"Ernesto",
@@ -45,6 +51,7 @@ Descripcion: Registra un nuevo usuario en la aplicación y lo inicia sesión aut
 Ruta: /recover - Método: POST
 
 Descripcion: Solicita un correo para restablecer la contraseña.
+Ejemplo de formato de body JSON en Postman:
 
 	{
 		"id":"ernesto.lopez.lbm@outlook.com"
@@ -54,6 +61,7 @@ Descripcion: Solicita un correo para restablecer la contraseña.
 Ruta: /restore - Método: PUT
 
 Descripcion:  Establece una nueva contraseña para el usuario solicitado en recover.
+Ejemplo de formato de body JSON en Postman:
 
 	{
 		"password": "asd",
@@ -64,12 +72,12 @@ Descripcion:  Establece una nueva contraseña para el usuario solicitado en reco
 Ruta: /deleteaccount - Método: PUT
 
 Descripcion: Elimina una cuenta y su carrito personal.
+Ejemplo de formato de body JSON en Postman:
 
 	{
 		"id": "ernesto.lopez.lbm@outlook.com",
 		"password": "1234Ab"
 	}
-
 
 
 ## API de carritos autogenerados (se refiere a los que no son los carritos personales de un usuario)
@@ -130,6 +138,8 @@ Descripción: elimina el carrito correspondiente al id.
 
 ## API de productos (Pokemons)
 
+En src/public/pokemons.js hay datos de pokemones con el formato adecuado para hacer las pruebas de carga (subir 1 pokemon a la vez por postman) 
+
 ### Agregar un nuevo producto
 Ruta: /api/products - Método: POST
 
@@ -157,6 +167,8 @@ Ruta: /api/products/:pid - Método: PUT
 
 Descripcion: Edita los datos del pokemon con el ID especificado. Se puede editar cualquier parámetro específico, no es necesario que se ingresen todos los datos.
 Notas: pid puede ser el ID de objeto "_id" o el "id" que se genera al cargar el producto.
+
+Ejemplo de formato de body JSON en Postman:
 
 	{
 		"name": "Ivysaur N.º002",
