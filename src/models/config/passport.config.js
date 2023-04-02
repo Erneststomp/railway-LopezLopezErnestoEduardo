@@ -25,11 +25,11 @@ const initializePassport=()=>{
                 missingCredentials.push(credential);
               }
             }); 
-            if(password!==passwordconf)return done(null, false, {message:"Password and password confirmation didnt match"})
             // Si faltan algunas credenciales, devolver un mensaje de error que las identifique
             if (missingCredentials.length > 0) {
               return done(null, false, { message: `Missing credentials: ${missingCredentials.join(', ')}` });
             }
+            if(password!==passwordconf)return done(null, false, {message:"Password and password confirmation didnt match"})
             // Verificar que el avatar sea una URL válida
             const avatarRegex = /^(ftp|http|https):\/\/[^ "]+$/;
             if (!avatarRegex.test(avatar)) {

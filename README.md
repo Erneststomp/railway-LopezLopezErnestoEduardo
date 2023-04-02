@@ -1,16 +1,24 @@
-link al proyecto desplegado en railway (solo /login y /chat muestran plantillas (tambien incluye la ruta /chat/:id) siendo id el email a visualizar en el chat): https://railway-lopezlopezernestoeduardo-production.up.railway.app/
+Proyecto Desplegado en Railway
+Puedes acceder al proyecto desplegado en Railway a través de este enlace: https://railway-lopezlopezernestoeduardo-production.up.railway.app/
 
-al entrar a la ruta base / verificara si esta logueado, si no, enviara al login, otro caso enviara el api/products, es la misma verificacion para borrar a un usuario o entrar al chat, pero se implementa diferente, ya que para estos casos, enviara la advertencia de que debe loguearse en lugar de redirigir al login, se implmenta asi, para diferenciar que al tratar de acceder a una ruta restringida, debe iniciar sesion y no se confunda con una redireccion erronea
+/login: Página de inicio de sesión
+/chat: Página de chat, mostrando plantillas
+/chat/:id: Página de chat para un usuario específico, donde id es el correo electrónico del usuario.
 
-Diagrama base Body JSON Postman, para la ruta: /login con el metodo post para iniciar sesion
-si ya se inicio sesion envia a /api/products
+El proyecto cuenta con una verificación de inicio de sesión en la ruta base /. Si el usuario no ha iniciado sesión, será redirigido a la página de inicio de sesión. De lo contrario, será redirigido a la ruta /api/products.
+(es la misma verificacion para borrar a un usuario o entrar al chat, pero se implementa diferente, ya que para estos casos, enviara la advertencia de que debe loguearse en lugar de redirigir al login, se implmenta asi, para diferenciar que al tratar de acceder a una ruta restringida, debe iniciar sesion y no se confunda con una redireccion erronea)
+
+Ruta: /login - Método: POST
+Inicia sesión en la aplicación.
+(si ya se inicio sesion envia a /api/products)
 {
-    	"id":"ernesto.lopez.lbm@outlook.com",
-    	"password":"1234Ab"
+  "id": "ernesto.lopez.lbm@outlook.com",
+  "password": "1234Ab"
 }
 
-Diagrama base Body JSON Postman, para la ruta: /register con el metodo post para registrar un nuevo usuario
-al registrar se inicia sesion automaticamente
+
+Ruta: /register - Método: POST
+Registra un nuevo usuario en la aplicación y lo inicia sesión automáticamente.
 {
 		"names":"Ernesto",
     	"lastname":"Lopez",
@@ -26,60 +34,83 @@ al registrar se inicia sesion automaticamente
 }
 
 
-Diagrama base Body JSON Postman para la ruta: /recover con el metodo post para solicitar un correo para reestableser contraseña
+Ruta: /recover - Método: POST
+Solicita un correo para restablecer la contraseña.
 {
 	"id":"ernesto.lopez.lbm@outlook.com"
-	}
-diagrama base Body JSON Postman para la ruta: /restore con el metodo PUT para establecer la nueva contraseña
-{
-	"password":"asd"
-	"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVybmVzdG8ubG9wZXoubGJtQG91dGxvb2suY29tIiwiaWF0IjoxNjc3ODI1MjA0LCJleHAiOjE2Nzc4MjU4MDR9.nwP4nswPlWgXKpDXMJN-9vzPh3J5SFmob2oDfgcj-4Y"
-	}
-
-diagrama base Body JSON Postman para la ruta: /deleteaccount el metodo PUT para eliminar la cuenta y su carrito personal
-{
-	"id":"ernesto.lopez.lbm@outlook.com",
-    	"password":"1234Ab"
-	}
-
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//las siguientes rutas refieren a los carritos con id autogenerado, asi como para los productos para ellos: 
-	cid= id del carro, el cual es un valor numerico
-	pid: id del producto que se desea agregar al carrito, tambien es un valor numerico, es el autogenerado a partid de la carga del pokemon
-	quantity: cantidad de productos
-
-la ruta /api/carts/ con el metodo GET arroja todos los carritos (unicamente los autogenerados)
-
-
-la ruta /api/carts/ con el metodo POST generara un carrito con un id automatico, 
-si se elimina el carrito, no se recuperara su ID, salvo que este sea el ultimo generado anteriormente
-
-la ruta api/carts/:id con el metodo GET nos muestra la info del carrito que es: 
-el id, el timestamp (sin formato) y los productos que tenemos, sin detalles, unicamente, muestra ids y cantidades
-
-la ruta /api/carts/:cid/products con el metodo GET nos mostrara todos los elementos que tenemos en ese carrito con detalle.
-
-
-Para la ruta /api/carts/:cid/products  con el metodo PUT para agregar un producto con su respectiva cantidad, al carrito seleccionado si no se especifica se agrega 1 por defecto
-{
-	"pid": 1
-    "quantity":3 (opcional, se coloca 1 por defecto)
 }
 
-Para la ruta /:cid/products/:pid con el metodo DELETE nos elimina el producto correspondiente al id del carrito (elimina todos los productos)
+Ruta: /restore - Método: PUT
+Establece una nueva contraseña para el usuario solicitado en recover.
+{
+  "password": "asd",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVybmVzdG8ubG9wZXoubGJtQG91dGxvb2suY29tIiwiaWF0IjoxNjc3ODI1MjA0LCJleHAiOjE2Nzc4MjU4MDR9.nwP4nswPlWgXKpDXMJN-9vzPh3J5SFmob2oDfgcj-4Y"
+}
 
-Para la ruta /:cid con el metodo DELETE elimina el carrito correspondiente al id
+
+Ruta: /deleteaccount - Método: PUT
+Elimina una cuenta y su carrito personal.
+{
+  "id": "ernesto.lopez.lbm@outlook.com",
+  "password": "1234Ab"
+}
 
 
 
-////////////////////////////////////////////////////////////////////////////////////
-Diagrama base Body JSON Postman, para la ruta: /api/products con el metodo POST para agregar un nuevo pokemon
-el id de cada pokemon se autogenera numericamente, tambien se genera el de mongo
-tecnicamente no es necesario ningun dato, con excepcion de un nombre, puesto que en caso de faltar, se auto complementara con 0 en el caso de precio y 1 para stock, y los demas, indicaran que no existe el respectivo campo.
-si los campos de price y stock no son enviados como numero, enviara un mensaje de error, en cambio si no se envian se autosetearan.
-si el codigo no es enviado se generara uno automaticamente, pero en caso de que exista otro producto similar los considerara distintos.
+API de carritos autogenerados
+
+Las siguientes rutas refieren a los carritos con id autogenerado, así como para los productos para ellos:
+
+	-cid: id del carro, el cual es un valor numérico.
+	-pid: id del producto que se desea agregar al carrito, también es un valor numérico, es el autogenerado a partir de la carga del pokemon.
+	-quantity: cantidad de productos.
+
+Obtener todos los carritos
+Ruta: /api/carts/ - Método: GET
+Descripción: devuelve una lista de todos los carritos autogenerados.
+
+
+Crear un carrito
+Ruta: /api/carts/ - Método: POST
+Descripción: crea un nuevo carrito con un id autogenerado.
+Notas: Si se elimina el carrito, no se recuperará su ID, salvo que este sea el último generado anteriormente.
+
+Obtener información de un carrito especifico
+Ruta: /api/carts/:id - Método: GET
+Descripción: devuelve la información de un carrito, incluyendo su id, timestamp (sin formato) y los productos que contiene.
+
+Obtener los productos de un carrito
+Ruta: /api/carts/:cid/products - Método: GET
+Descripción: muestra todos los elementos que contiene un carrito con detalle.
+
+
+Agregar un producto a un carrito
+Ruta: /api/carts/:cid/products - Método: PUT 
+Descripción: agrega un producto con su respectiva cantidad al carrito seleccionado. Si no se especifica, se agrega 1 por defecto.
+
+Ejemplo de formato de body JSON en Postman:
+{
+    "pid": 1,
+    "quantity": 3
+}
+
+
+Eliminar un producto de un carrito
+Ruta: /api/carts/:cid/products/:pid - Método: DELETE
+Descripción: elimina los productos correspondientes con id del prodcuto (pid) en el carrito con un id (cid).
+
+Eliminar un carrito
+Ruta: /api/carts/:cid - Método: DELETE
+Descripción: elimina el carrito correspondiente al id.
+
+
+
+API de productos (Pokemons)
+
+Agregar un nuevo producto
+Ruta: /api/products - Método: POST
+Descripción: agrega un nuevo producto con id autogenerado. El id de cada pokemon se autogenera numéricamente, también se genera el de MongoDB. Técnicamente no es necesario ningún dato, con excepción de un nombre, puesto que en caso de faltar, se auto complementará con 0 en el caso de precio y 1 para stock, y los demás indicarán que no existe el respectivo campo. Si los campos de price y stock no son enviados como números, enviará un mensaje de error. En cambio, si no se envían, se autoajustarán. Si el código no es enviado, se generará uno automáticamente, pero en caso de que exista otro producto similar, los considerará distintos.
+Ejemplo de formato de body JSON en Postman:
 {
 	"name": "Venasaur N.º002",
 	"description": "Este Pokémon nace con una semilla en el lomo, que brota con el paso del tiempo.",
@@ -90,48 +121,72 @@ si el codigo no es enviado se generara uno automaticamente, pero en caso de que 
 	"type":"grass"
 }
 
-para la ruta /api/products/:pid? con el metodo GET nos regresa todos los pokemones si no se especifica el pid
-si se especifica, nos regresa el producto especifico
-como :pid se puede enviar ya sea el objectid "_id" o el "id" que se genera al cargar el articulo, ambos funcionan
+Ver todos los pokemones o uno específico
+Ruta: /api/products/:pid? - Método: GET
+Descripcion: Obtiene todos los pokemones si no se especifica el ID de un pokemon. Si se especifica el ID, devuelve toda la infomracion del pokemon específicado.
+Notas: pid puede ser el ID de objeto "_id" o el "id" que se genera al cargar el producto.
 
-
-la ruta /api/products/:pid con el metodo PUT edita los datos del producto con el respectivo id
-se puede editar cualquier parametetro especifico, no es necesario que se ingresen todos los datos
-como :pid se puede enviar ya sea el objectid "_id" o el "id" que se genera al cargar el articulo, ambos funcionan
-
+Editar un pokemon
+Ruta: /api/products/:pid - Método: PUT
+Descripcion: Edita los datos del pokemon con el ID especificado. Se puede editar cualquier parámetro específico, no es necesario que se ingresen todos los datos.
+Notas: pid puede ser el ID de objeto "_id" o el "id" que se genera al cargar el producto.
 {
-		"name": "Ivysaur N.º002",
-		"description": "Cuando le crece bastante el bulbo del lomo, pierde la capacidad de erguirse sobre las patas traseras.",
-		"thumbnail": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/002.png",
-		"price": 125,
-		"stock": 100,
-		"type":"grass"
+	"name": "Ivysaur N.º002",
+	"description": "Cuando le crece bastante el bulbo del lomo, pierde la capacidad de erguirse sobre las patas traseras.",
+	"thumbnail": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/002.png",
+	"price": 125,
+	"stock": 100,
+	"type":"grass"
 }
 
-la ruta /api/products/:pid con el metodo DELETE elimina el producto con el id especifico
-como :pid se puede enviar ya sea el objectid "_id" o el "id" que se genera al cargar el articulo, ambos funcionan
+Eliminar un producto de la tienda
+Ruta: /api/products/:pid - Método: DELETE
+Descripcion: Elimina de la base de datos el pokemon con el ID especificado. 
+Notas: pid puede ser el ID de objeto "_id" o el "id" que se genera al cargar el producto.
 
-la ruta /api/products/deleteall con el metodo DELETE elimina todos los productos del registro
+Eliminar todos los productos de la tienda
+Ruta: /api/products/deleteall - Método: DELETE
+Descripcion: Elimina de la base de datos todos los pokemons.
 
-la ruta /api/carts/:cid/products con el metodo POST realizara un proceso de compra (donde se enviara al correo definido en la variable de entorno el mensaje de la compra y se eliminan los productos del carrito)
+Comprar productos en el carrito
+Ruta: /api/carts/:cid/products - Método: POST
+Descripcion: Realizara un proceso de compra (donde se enviara al correo definido en la variable de entorno el mensaje de la compra y se eliminan los productos del carrito).
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-La ruta /carts/cid con el metodo  GET nos deja ver el carrito del usuario cId, pero en este caso, 
-se separa su logica debido a que aqui se utiliza el email como id de usuario, lo mismo ocurre con el resto de las rutas 
+API de carritos personales 
+Las siguientes rutas refieren a los carritos personales (de cada usuario), así como para los productos para ellos:
 
-/carts/:cid/products con el metodo GET Nos deja ver la lista detallada de los elementos en el carrito
-/carts/:cid/products con el metodo PUT agrega un objeto al carrito de acuerdo a la siguiente configuracion, pero si no se envia el quantity
-se colcoara 1 en automatico
+	-cid: id del carro, el cual es el correo del usuario.
+	-pid: id del producto que se desea agregar al carrito, también es un valor numérico, es el autogenerado a partir de la carga del pokemon.
+	-quantity: cantidad de productos.
+
+
+Obtener información de un carrito personal especifico
+Ruta: /carts/cid - Método: GET
+Descripción: devuelve la información de un carrito personal, incluyendo su id, timestamp (sin formato) y los productos que contiene.
+Notas: Es la misma logica que los carritos autogenerados pero se separan debido a que aqui se utiliza el email como id de usuario, lo mismo ocurre con el resto de las rutas.
+
+Obtener los productos de un carrito personal
+Ruta: /carts/:cid/products - Método: GET
+Descripción: muestra todos los elementos que contiene el carrito con detalle de cada producto.
+
+
+Agregar un producto a un carrito
+Ruta: /carts/:cid/products - Método: PUT 
+Descripción: agrega un producto con su respectiva cantidad al carrito seleccionado. Si no se envia el dato quantity, se agrega 1 por defecto.
+
+Ejemplo de formato de body JSON en Postman:
 {
-        "pid": 1,
-    	"quantity":3 (opcional si no se coloca se enviara 1 en automatico)
+    "pid": 1,
+    "quantity": 3
 }
 
-       
-// Delete Product from Cart
-la ruta /:cid/products/:pid' con el metodo delete, elimina un objeto del carrito 
 
-la ruta /carts/:cid/products y la ruta /api/carts/:cid/products con el metodo POST realizaran un proceso de compra, eliminando la cantidad solicitada al stock restante
-(donde se enviara al correo del usuario en la variable de entorno el mensaje de la compra)
-asi como eliminando el contenido del carrito y agregando la compra a la coleccion orders
+Eliminar un producto de un carrito
+Ruta: /carts/:cid/products/:pid - Método: DELETE
+Descripción: elimina los productos correspondientes con id del prodcuto (pid) en el carrito con un id (cid).
+
+Comprar productos en el carrito personal
+Ruta: /carts/:cid/products - Método: POST
+Descripcion: Realizara un proceso de compra (donde se enviara al correo del usuario el mensaje de la compra y se eliminan los productos del carrito y se resta el stock).
+
