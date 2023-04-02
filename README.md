@@ -18,8 +18,8 @@ Descripcion: Inicia sesión en la aplicación.
 (si ya se inicio sesion envia a /api/products)
 
 	{
-	"id": "ernesto.lopez.lbm@outlook.com",
-	"password": "1234Ab"
+		"id": "ernesto.lopez.lbm@outlook.com",
+		"password": "1234Ab"
 	}
 
 ### Registro
@@ -56,8 +56,8 @@ Ruta: /restore - Método: PUT
 Descripcion:  Establece una nueva contraseña para el usuario solicitado en recover.
 
 	{
-	"password": "asd",
-	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVybmVzdG8ubG9wZXoubGJtQG91dGxvb2suY29tIiwiaWF0IjoxNjc3ODI1MjA0LCJleHAiOjE2Nzc4MjU4MDR9.nwP4nswPlWgXKpDXMJN-9vzPh3J5SFmob2oDfgcj-4Y"
+		"password": "asd",
+		"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVybmVzdG8ubG9wZXoubGJtQG91dGxvb2suY29tIiwiaWF0IjoxNjc3ODI1MjA0LCJleHAiOjE2Nzc4MjU4MDR9.nwP4nswPlWgXKpDXMJN-9vzPh3J5SFmob2oDfgcj-4Y"
 	}
 
 ### Eliminacion de cuenta
@@ -66,8 +66,8 @@ Ruta: /deleteaccount - Método: PUT
 Descripcion: Elimina una cuenta y su carrito personal.
 
 	{
-	"id": "ernesto.lopez.lbm@outlook.com",
-	"password": "1234Ab"
+		"id": "ernesto.lopez.lbm@outlook.com",
+		"password": "1234Ab"
 	}
 
 
@@ -212,10 +212,10 @@ Descripción: agrega un producto con su respectiva cantidad al carrito seleccion
 
 Ejemplo de formato de body JSON en Postman:
 
-{
-    "pid": 1,
-    "quantity": 3
-}
+	{
+		"pid": 1,
+		"quantity": 3
+	}
 
 
 ### Eliminar un producto de un carrito
@@ -223,7 +223,7 @@ Ruta: /carts/:cid/products/:pid - Método: DELETE
 
 Descripción: elimina los productos correspondientes con id del prodcuto (pid) en el carrito con un id (cid).
 
-Comprar productos en el carrito personal
+## Comprar productos en el carrito personal
 Ruta: /carts/:cid/products - Método: POST
 
 Descripcion: Realizara un proceso de compra (donde se enviara al correo del usuario el mensaje de la compra y se eliminan los productos del carrito y se resta el stock).
