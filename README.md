@@ -4,10 +4,10 @@ Puedes acceder al proyecto desplegado en Railway a través de este enlace: https
  
 ## Rutas con Socket.io
 
-Página de chat, mostrando plantillas
+### Página de chat, mostrando plantillas
 Ruta: /chat 
 
-Página para visualizar mensajes del chat para un usuario específico, donde id es el correo electrónico del usuario.
+### Página para visualizar mensajes del chat para un usuario específico, donde id es el correo electrónico del usuario.
 Ruta: /chat/:id 
 
 El proyecto cuenta con una verificación de inicio de sesión en la ruta base /. 
