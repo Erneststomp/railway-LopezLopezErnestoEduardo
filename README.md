@@ -16,6 +16,7 @@ Ruta: /login - Método: POST
 
 Descripcion: Inicia sesión en la aplicación.
 (si ya se inicio sesion envia a /api/products)
+
 	{
 	"id": "ernesto.lopez.lbm@outlook.com",
 	"password": "1234Ab"
@@ -25,6 +26,7 @@ Descripcion: Inicia sesión en la aplicación.
 Ruta: /register - Método: POST
 
 Descripcion: Registra un nuevo usuario en la aplicación y lo inicia sesión automáticamente.
+
 	{
 		"names":"Ernesto",
 		"lastname":"Lopez",
@@ -43,6 +45,7 @@ Descripcion: Registra un nuevo usuario en la aplicación y lo inicia sesión aut
 Ruta: /recover - Método: POST
 
 Descripcion: Solicita un correo para restablecer la contraseña.
+
 	{
 		"id":"ernesto.lopez.lbm@outlook.com"
 	}
@@ -51,6 +54,7 @@ Descripcion: Solicita un correo para restablecer la contraseña.
 Ruta: /restore - Método: PUT
 
 Descripcion:  Establece una nueva contraseña para el usuario solicitado en recover.
+
 	{
 	"password": "asd",
 	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVybmVzdG8ubG9wZXoubGJtQG91dGxvb2suY29tIiwiaWF0IjoxNjc3ODI1MjA0LCJleHAiOjE2Nzc4MjU4MDR9.nwP4nswPlWgXKpDXMJN-9vzPh3J5SFmob2oDfgcj-4Y"
@@ -60,6 +64,7 @@ Descripcion:  Establece una nueva contraseña para el usuario solicitado en reco
 Ruta: /deleteaccount - Método: PUT
 
 Descripcion: Elimina una cuenta y su carrito personal.
+
 	{
 	"id": "ernesto.lopez.lbm@outlook.com",
 	"password": "1234Ab"
@@ -104,6 +109,7 @@ Ruta: /api/carts/:cid/products - Método: PUT
 Descripción: agrega un producto con su respectiva cantidad al carrito seleccionado. Si no se especifica, se agrega 1 por defecto.
 
 Ejemplo de formato de body JSON en Postman:
+
 	{
 		"pid": 1,
 		"quantity": 3
@@ -129,6 +135,7 @@ Ruta: /api/products - Método: POST
 
 Descripción: agrega un nuevo producto con id autogenerado. El id de cada pokemon se autogenera numéricamente, también se genera el de MongoDB. Técnicamente no es necesario ningún dato, con excepción de un nombre, puesto que en caso de faltar, se auto complementará con 0 en el caso de precio y 1 para stock, y los demás indicarán que no existe el respectivo campo. Si los campos de price y stock no son enviados como números, enviará un mensaje de error. En cambio, si no se envían, se autoajustarán. Si el código no es enviado, se generará uno automáticamente, pero en caso de que exista otro producto similar, los considerará distintos.
 Ejemplo de formato de body JSON en Postman:
+
 	{
 		"name": "Venasaur N.º002",
 		"description": "Este Pokémon nace con una semilla en el lomo, que brota con el paso del tiempo.",
@@ -150,6 +157,7 @@ Ruta: /api/products/:pid - Método: PUT
 
 Descripcion: Edita los datos del pokemon con el ID especificado. Se puede editar cualquier parámetro específico, no es necesario que se ingresen todos los datos.
 Notas: pid puede ser el ID de objeto "_id" o el "id" que se genera al cargar el producto.
+
 	{
 		"name": "Ivysaur N.º002",
 		"description": "Cuando le crece bastante el bulbo del lomo, pierde la capacidad de erguirse sobre las patas traseras.",
@@ -203,6 +211,7 @@ Ruta: /carts/:cid/products - Método: PUT
 Descripción: agrega un producto con su respectiva cantidad al carrito seleccionado. Si no se envia el dato quantity, se agrega 1 por defecto.
 
 Ejemplo de formato de body JSON en Postman:
+
 {
     "pid": 1,
     "quantity": 3
