@@ -52,12 +52,8 @@ export const productsController = {
         const allProducts = await productDAO.getAll()
         
         const itemProduct = allProducts.find(item => item.code == req.body.code) 
-        if(req.body.price){if( isNaN(parseInt(req.body.price)) ||parseInt(req.body.price) < 0){
-        req.body.price=0
-      }}
-      if(req.body.stock){if(isNaN(parseInt(req.body.stock)) ||parseInt(req.body.stock) < 0){
-        req.body.stock=1
-      }}
+        if(req.body.price){if(isNaN(parseInt(req.body.price))||parseInt(req.body.price) < 0){ return res.send({description:'Invalid price, it must be numerical and positive, the product will not be added'})}}
+        if(req.body.stock){if(isNaN(parseInt(req.body.stock))||parseInt(req.body.stock) < 0){ return res.send({description:'Invalid stock, it must be numerical and positive, the product will not be added'})}}
 
         if(typeof (itemProduct) == 'undefined'){
 
@@ -81,7 +77,7 @@ export const productsController = {
             code: req.body.code ? req.body.code : crypto.randomUUID(),
             thumbnail: req.body.thumbnail ? req.body.thumbnail : 'No image',
             price: req.body.price ? parseInt( req.body.price ) : 0,
-            stock: req.body.stock ? parseInt( req.body.stock ) : 1,
+            stock: req.body.stock ? parseInt( req.body.stock ) : 0,
             type: req.body.type ? req.body.type : 'unknown',
           } 
           if(newProduct.name!=='No name'){
@@ -107,7 +103,7 @@ export const productsController = {
       try {
         let pId = parseInt(req.params.pid)
         if(isNaN(pId) ){
-          return res.send({description:'Invalid product ID, it must be numerical'})
+          return res.send({description:'Invalid product ID, it must be numerical, or be the objectid'})
         }
         pId=req.params.pid;
         if(req.body.price){if(isNaN(parseInt(req.body.price))||parseInt(req.body.price) < 0){ return res.send({description:'Invalid price, it must be numerical and positive, the product will not be updated'})}}
@@ -118,7 +114,7 @@ export const productsController = {
         } else {
 
           const editedProduct = {
-            id:  pId,
+            id:  productFound.id,
             timestamp:Date.now(),
             name: req.body.name ? req.body.name : productFound.name,
             description: req.body.description ? req.body.description : productFound.description,
@@ -128,8 +124,7 @@ export const productsController = {
             stock: isNaN(parseInt(req.body.stock)) ? productFound.stock : parseInt(req.body.stock),
             type: req.body.type ? req.body.type : productFound.type,
           }
-
-          await productDAO.editById(editedProduct,pId)
+          await productDAO.editById(editedProduct,editedProduct.id)
           res.status(200).json({description:`Product with id=${pId} updated`,editedProduct})
         }
       } catch (error) {

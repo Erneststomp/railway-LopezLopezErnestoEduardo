@@ -80,7 +80,7 @@ Ejemplo de formato de body JSON en Postman:
 	}
 
 
-## API de carritos autogenerados (se refiere a los que no son los carritos personales de un usuario)
+## API de carritos autogenerados (se refiere a los que no son los carritos generados con la creacion del usuario)
 
 Las siguientes rutas refieren a los carritos con id autogenerado, así como para los productos para ellos:
 
@@ -143,7 +143,7 @@ En src/public/pokemons.js hay datos de pokemones con el formato adecuado para ha
 ### Agregar un nuevo producto
 Ruta: /api/products - Método: POST
 
-Descripción: agrega un nuevo producto con id autogenerado. El id de cada pokemon se autogenera numéricamente, también se genera el de MongoDB. Técnicamente no es necesario ningún dato, con excepción de un nombre, puesto que en caso de faltar, se auto complementará con 0 en el caso de precio y 1 para stock, y los demás indicarán que no existe el respectivo campo. Si los campos de price y stock no son enviados como números, enviará un mensaje de error. En cambio, si no se envían, se autoajustarán. Si el código no es enviado, se generará uno automáticamente, pero en caso de que exista otro producto similar, los considerará distintos.
+Descripción: agrega un nuevo producto con id autogenerado. El id de cada pokemon se autogenera numéricamente, también se genera el de MongoDB. Técnicamente no es necesario ningún dato, con excepción de un nombre, puesto que en caso de faltar, se auto complementará con 0 en el caso de precio y stock, y los demás indicarán que no existe el respectivo campo. Si los campos de price y stock no son enviados como números se enviara una advertencia y no se generaran, en su defecto puede no enviarse el campo para que se auto seteen con 0, lo que impedira su compra pero permitira tener el producto cargado para su psoterior edicion. Si el código no es enviado, se generará uno automáticamente, pero en caso de que exista otro producto similar, los considerará distintos.
 Ejemplo de formato de body JSON en Postman:
 
 	{
@@ -193,7 +193,7 @@ Descripcion: Elimina de la base de datos todos los pokemons.
 ### Comprar productos en el carrito
 Ruta: /api/carts/:cid/products - Método: POST
 
-Descripcion: Realizara un proceso de compra (donde se enviara al correo definido en la variable de entorno el mensaje de la compra y se eliminan los productos del carrito).
+Descripcion: Realizara un proceso de compra (donde se enviara al correo definido en la variable de entorno el mensaje de la compra y se eliminan los productos del carrito y se resta el stock, ademas de que se guardara la orden de compra en una nueva coleccion).
 
 
 ## API de carritos personales 
@@ -238,5 +238,5 @@ Descripción: elimina los productos correspondientes con id del prodcuto (pid) e
 ## Comprar productos en el carrito personal
 Ruta: /carts/:cid/products - Método: POST
 
-Descripcion: Realizara un proceso de compra (donde se enviara al correo del usuario el mensaje de la compra y se eliminan los productos del carrito y se resta el stock).
+Descripcion: Realizara un proceso de compra (donde se enviara al correo del usuario el mensaje de la compra y se eliminan los productos del carrito y se resta el stock, ademas de que se guardara la orden de compra en una nueva coleccion).
 

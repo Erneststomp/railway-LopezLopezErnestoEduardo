@@ -55,12 +55,15 @@ export class MongoDBContainer {
     //se edita un objeto dentro de la respectiva coleccion con un id
     editById = async ({id ,...object}) => {
         try {
-            await this.collection.updateOne(
+            console.log(id)
+            console.log(object)
+            let response=await this.collection.updateOne(
             {
                 id: id,
             },
             { $set: object }
             )
+            console.log(response)
         } catch (error) {
             console.warn({class:`class MongoDBContainer`, method:`editById= async(object) `,description:error})
             throw new Error(error);
