@@ -55,8 +55,6 @@ export class MongoDBContainer {
     //se edita un objeto dentro de la respectiva coleccion con un id
     editById = async ({id ,...object}) => {
         try {
-            console.log(id)
-            console.log(object)
             let response=await this.collection.updateOne(
             {
                 id: id,
